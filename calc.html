@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>かんたん定期預金なび - あんぜん資産なび</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kiwi Maru', sans-serif, serif;
+      color: #334155;
+      background-color: #f7f9fa;
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 15px;
+    }
+
+    .calc-card {
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 3px 3px 0px #334155;
+      position: relative;
+    }
+
+    /* --- トップへ戻るボタン（薄い水色の丸枠スタイル） --- */
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #e0f2fe;
+      border: 2px solid #bae6fd;
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: #0369a1;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+      box-shadow: 1px 2px 0px #bae6fd;
+      transition: all 0.2s ease;
+    }
+
+    .top-link:hover {
+      background-color: #bae6fd;
+      border-color: #7dd3fc;
+      color: #0284c7;
+    }
+
+    .calc-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      color: #1e293b;
+      margin: 0 0 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px dashed #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* --- 入力エリア --- */
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #475569;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+      flex: 1;
+      padding: 6px 10px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      background-color: #f8fafc;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper select:focus {
+      border-color: #0284c7;
+      background-color: #ffffff;
+    }
+
+    .unit-text {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    /* ボタンエリア */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin: 16px 0 20px 0;
+    }
+
+    .btn-clear {
+      width: 32%;
+      background: #f1f5f9;
+      color: #475569;
+      border: 2px solid #94a3b8;
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      width: 68%;
+      background: #2563eb;
+      color: #ffffff;
+      border: 2px solid #1d4ed8;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 1px 2px 0px #1e40af;
+      transition: transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-submit:active {
+      transform: translateY(1px);
+    }
+
+    /* --- 計算結果エリア --- */
+    .result-container {
+      background-color: #0284c7;
+      border: 3px solid #0369a1;
+      border-radius: 14px;
+      padding: 18px 16px;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    .result-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #e0f2fe;
+      text-align: center;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .result-main {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #38bdf8;
+    }
+
+    .result-main-label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #bae6fd;
+      margin-bottom: 4px;
+    }
+
+    .result-main-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: right;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .result-sub-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .result-sub-label {
+      font-size: 0.85rem;
+      color: #e0f2fe;
+      font-weight: bold;
+    }
+
+    .result-sub-value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .calc-note {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      margin-top: 14px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calc-card">
+    <a href="top.html" class="top-link">← トップへ戻る</a>
+
+    <div class="calc-title">
+      💴 かんたん定期預金なび
+    </div>
+
+    <!-- 入力フォーム -->
+    <form id="calc-form" onsubmit="event.preventDefault(); calculate();">
+      <div class="form-group">
+        <label class="form-label" for="amount">預入金額</label>
+        <div class="input-wrapper">
+          <input type="number" id="amount" placeholder="例: 100" min="0" step="any" required>
+          <span class="unit-text">万円</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="period">預入期間</label>
+        <div class="input-wrapper">
+          <select id="period">
+            <option value="0.083">1ヶ月</option>
+            <option value="0.25">3ヶ月</option>
+            <option value="0.5">6ヶ月</option>
+            <option value="1" selected>1年</option>
+            <option value="2">2年</option>
+            <option value="3">3年</option>
+            <option value="5">5年</option>
+            <option value="7">7年</option>
+            <option value="10">10年</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="rate">金利（年利）</label>
+        <div class="input-wrapper">
+          <input type="number" id="rate" placeholder="例: 0.5" step="any" min="0" required>
+          <span class="unit-text">%</span>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn-clear" onclick="resetForm()">クリア</button>
+        <button type="submit" class="btn-submit">計算する ➔</button>
+      </div>
+    </form>
+
+    <!-- 結果エリア -->
+    <div class="result-container">
+      <div class="result-title">
+        📊 計算結果（概算）
+      </div>
+
+      <div class="result-main">
+        <div class="result-main-label">元利合計金額（税引後）</div>
+        <div class="result-main-value" id="res-total">- 円</div>
+      </div>
+
+      <div class="result-sub-row">
+        <span class="result-sub-label">（参考）税引前利息</span>
+        <span class="result-sub-value" id="res-before-tax">- 円</span>
+      </div>
+
+      <div class="result-sub-row">
+        <span class="result-sub-label">（参考）税引後利息</span>
+        <span class="result-sub-value" id="res-after-tax">- 円</span>
+      </div>
+    </div>
+
+    <div class="calc-note">
+      ※受取利息は単利・年20.315%（復興特別所得税含む）の源泉分離課税で試算しています。実際の満期日・日割計算により数値が異なる場合があります。
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const amountVal = document.getElementById('amount').value;
+      const rateVal = document.getElementById('rate').value;
+
+      if (!amountVal || !rateVal) return;
+
+      const amountWan = parseFloat(amountVal) || 0;
+      const periodYears = parseFloat(document.getElementById('period').value) || 0;
+      const annualRate = parseFloat(rateVal) || 0;
+
+      const principal = amountWan * 10000;
+      
+      // 単利計算: 元本 × 年利(%) × 期間(年)
+      const interestBeforeTax = Math.floor(principal * (annualRate / 100) * periodYears);
+      
+      // 税引き（税率 20.315%）
+      const tax = Math.floor(interestBeforeTax * 0.20315);
+      const interestAfterTax = interestBeforeTax - tax;
+      const totalAmount = principal + interestAfterTax;
+
+      // 画面更新
+      document.getElementById('res-total').textContent = totalAmount.toLocaleString() + ' 円';
+      document.getElementById('res-before-tax').textContent = interestBeforeTax.toLocaleString() + ' 円';
+      document.getElementById('res-after-tax').textContent = interestAfterTax.toLocaleString() + ' 円';
+    }
+
+    function resetForm() {
+      document.getElementById('amount').value = '';
+      document.getElementById('period').value = '1';
+      document.getElementById('rate').value = '';
+
+      document.getElementById('res-total').textContent = '- 円';
+      document.getElementById('res-before-tax').textContent = '- 円';
+      document.getElementById('res-after-tax').textContent = '- 円';
+    }
+  </script>
+
+</body>
+</html>

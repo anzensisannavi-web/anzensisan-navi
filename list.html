@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛡️ じっくり選べるあんぜん資産なび - あんぜん資産なび</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kiwi Maru', sans-serif, serif;
+      color: #334155;
+      background-color: #f7f9fa;
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* --- 0. 背景散らしイラスト配置エリア（左右計8個） --- */
+    .bg-decorations {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .decor-item {
+      position: absolute;
+      opacity: 0.55;
+    }
+
+    .decor-left-1 { top: 150px;  left: 2%;   width: 110px; transform: rotate(-12deg); }
+    .decor-left-2 { top: 650px;  left: 3.5%; width: 90px;  transform: rotate(15deg); }
+    .decor-left-3 { top: 1200px; left: 1.5%; width: 120px; transform: rotate(-8deg); }
+    .decor-left-4 { top: 1750px; left: 3%;   width: 95px;  transform: rotate(20deg); }
+
+    .decor-right-1 { top: 200px;  right: 2.5%; width: 130px; transform: rotate(8deg); }
+    .decor-right-2 { top: 700px;  right: 2%;   width: 100px; transform: rotate(-18deg); }
+    .decor-right-3 { top: 1250px; right: 3%;   width: 115px; transform: rotate(12deg); }
+    .decor-right-4 { top: 1800px; right: 1.5%; width: 105px; transform: rotate(-10deg); }
+
+    @media (max-width: 1150px) {
+      .bg-decorations { display: none; }
+    }
+
+    /* --- 1. 雲のアニメーション --- */
+    .cloud {
+      position: fixed;
+      z-index: 999;
+      pointer-events: none;
+    }
+    .cloud img { width: 100%; height: auto; display: block; }
+
+    .cloud-top-right {
+      top: 0;
+      right: 0;
+      width: 300px;
+      animation: slideOutTR 1.0s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
+    }
+
+    .cloud-bottom-left {
+      bottom: -300px;
+      left: -300px;
+      width: 700px;
+      animation: slideOutBL 1.0s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
+    }
+
+    @keyframes slideOutTR {
+      0% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(120%, -120%); opacity: 0; visibility: hidden; }
+    }
+    @keyframes slideOutBL {
+      0% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(-120%, 120%); opacity: 0; visibility: hidden; }
+    }
+
+    /* --- 2. サイト本体のフェードイン --- */
+    .site-wrapper {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeInSite 0.6s ease-out 0.5s forwards;
+    }
+    @keyframes fadeInSite {
+      to { opacity: 1; }
+    }
+
+    /* --- 3. ヘッダー --- */
+    header {
+      background-color: #dbeafe;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 2px dashed #93c5fd;
+      transition: transform 0.3s ease;
+    }
+
+    header.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 6px 20px;
+      text-decoration: none;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 8px;
+    }
+
+    .tape-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1;
+      object-fit: fill;
+      filter: 
+        drop-shadow(1px 0 0 #ffffff)
+        drop-shadow(-1px 0 0 #ffffff)
+        drop-shadow(0 1px 0 #ffffff)
+        drop-shadow(0 -1px 0 #ffffff)
+        drop-shadow(1px 1px 0 #ffffff)
+        drop-shadow(-1px -1px 0 #ffffff)
+        drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .clip-img {
+      position: absolute;
+      top: -12px;
+      left: 28px;
+      width: 24px;
+      z-index: 3;
+    }
+
+    .site-title {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 
+        2px 2px 3px rgba(30, 41, 59, 0.6),
+        -1px -1px 0px rgba(148, 163, 184, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .menu-btn {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 25px;
+      right: 20px;
+      background: #60a5fa;
+      color: #fff;
+      border: 2px solid #2563eb;
+      padding: 10px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+      z-index: 100;
+    }
+
+    /* --- 4. 2カラム・レイアウト --- */
+    .page-layout {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 90px 15px 40px 15px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sub-caption {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin: 10px 0 20px 0;
+      text-align: center;
+    }
+
+    /* --- 5. メイン記事コンテナ --- */
+    .list-container {
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 3px 3px 0px #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    .page-header-title {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-description {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      background-color: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border-left: 4px solid #60a5fa;
+    }
+
+    /* 絞り込みタブ */
+    .filter-tab-container {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .tab-header-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      background-color: #ffffff;
+      border: 1.5px solid #94a3b8;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: #f1f5f9;
+    }
+
+    .tab-btn.active {
+      background-color: #3b82f6;
+      color: #ffffff;
+      border-color: #1d4ed8;
+      box-shadow: 1px 1px 0px #1d4ed8;
+    }
+
+    /* テーブルデザイン */
+    .table-wrapper {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 0.82rem;
+      background: #ffffff;
+    }
+
+    .data-table th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: bold;
+      padding: 10px 6px;
+      text-align: left;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .data-table td {
+      padding: 10px 6px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: middle;
+      word-wrap: break-word;
+      line-height: 1.35;
+    }
+
+    .data-table tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* 列幅設定 */
+    .col-rank { width: 42px; text-align: center; }
+    .col-bank { width: 110px; font-weight: bold; color: #1e293b; }
+    .col-product { width: 160px; font-weight: bold; color: #1d4ed8; }
+    .col-rate { width: 85px; font-weight: bold; color: #059669; font-size: 0.95rem; }
+    .col-min { width: 75px; }
+    .col-desc { width: auto; color: #64748b; font-size: 0.75rem; }
+
+    .rank-num {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      background: #64748b;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .rank-num.r1 { background-color: #eab308; }
+    .rank-num.r2 { background-color: #94a3b8; }
+    .rank-num.r3 { background-color: #d97706; }
+
+    /* （＊）注記エリア */
+    .note-disclaimer {
+      margin-top: 15px;
+      padding: 12px 14px;
+      background-color: #fffbebf8;
+      border: 1px solid #fef08a;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: #713f12;
+      line-height: 1.5;
+    }
+
+    /* ボタンエリア */
+    .back-btn-wrapper {
+      margin-top: 35px;
+      text-align: center;
+    }
+
+    .btn-back-to-top {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #ffffff;
+      color: #3a4b63;
+      border: 2px solid #52637a;
+      border-radius: 30px;
+      padding: 10px 32px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 3px 3px 0px #52637a;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-back-to-top:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0px #52637a;
+    }
+
+    .btn-back-to-top:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0px 0px 0px #52637a;
+    }
+
+    .btn-arrow {
+      font-size: 0.9rem;
+    }
+
+    /* --- 6. サイドバーウィジェット --- */
+    .sidebar-widget {
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 14px 12px;
+      box-shadow: 2px 2px 0px #334155;
+      text-align: left;
+    }
+
+    .widget-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+      padding-bottom: 6px;
+      border-bottom: 1.5px dashed #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .widget-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .widget-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .widget-list li span {
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .widget-list li a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: bold;
+      line-height: 1.3;
+      word-break: break-all;
+    }
+
+    .widget-list li a:hover { text-decoration: underline; }
+
+    /* キャンペーン表示スタイル（top.htmlと同等化） */
+    .campaign-item {
+      padding: 10px 0;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .campaign-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .campaign-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .campaign-badge {
+      display: inline-block;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 1px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .campaign-bank {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #1e293b;
+    }
+    .campaign-product {
+      font-size: 0.78rem;
+      color: #475569;
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+    .campaign-rate {
+      font-size: 0.92rem;
+      font-weight: bold;
+      color: #dc2626;
+    }
+    .campaign-note {
+      font-size: 0.68rem;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    /* モバイル対応 */
+    @media (max-width: 850px) {
+      .page-layout { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
+
+    @media (max-width: 650px) {
+      .col-desc { display: none; }
+      .col-bank { width: 95px; }
+      .col-product { width: 130px; }
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      background-color: #f5ebe0;
+      border-top: 2px dashed #d5bdaf;
+      padding: 30px 15px 20px 15px;
+      text-align: center;
+    }
+    .footer-nav { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; font-size: 0.9rem; }
+    .footer-nav a { color: #475569; text-decoration: none; }
+    .copyright { font-size: 0.75rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <!-- 背景散らしイラストエリア -->
+  <div class="bg-decorations">
+    <img src="images/rakugaki-01.png" class="decor-item decor-left-1" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-left-2" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-left-3" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-left-4" alt="">
+
+    <img src="images/rakugaki-02.png" class="decor-item decor-right-1" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-right-2" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-right-3" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-right-4" alt="">
+  </div>
+
+  <div class="cloud cloud-top-right">
+    <img src="images/cloud1.png" alt="雲1" onerror="this.style.display='none'">
+  </div>
+  <div class="cloud cloud-bottom-left">
+    <img src="images/cloud2.png" alt="雲2" onerror="this.style.display='none'">
+  </div>
+
+  <div class="site-wrapper">
+
+    <!-- ヘッダー -->
+    <header id="site-header">
+      <a href="top.html" class="title-wrapper">
+        <img src="images/clip.png" class="clip-img" alt="" onerror="this.style.display='none'">
+        <img src="images/tape.png" class="tape-bg" alt="" onerror="this.style.display='none'">
+        <h1 class="site-title">あんぜん資産なび</h1>
+      </a>
+      
+      <button class="menu-btn">
+        <span>☰</span> メニュー
+      </button>
+    </header>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">▲ トップへ</button>
+
+    <div class="page-layout" id="top">
+
+      <!-- 左メインコンテンツエリア -->
+      <main class="main-content">
+
+        <div class="sub-caption">
+          フラットな目線で資産比較 ー特定サービス斡旋なしー
+        </div>
+
+        <div class="list-container">
+          <h2 class="page-header-title">
+            🛡️ じっくり選べるあんぜん資産なび
+          </h2>
+
+          <div class="page-description">
+            元本保証（＊）・高金利の安全な預け先を、年利順に一覧比較できます。よりよい運用先をじっくり比較できます。
+          </div>
+
+          <!-- 絞り込みタブ -->
+          <div class="filter-tab-container">
+            <div class="tab-header-label">🔍 条件で絞り込み</div>
+            <div class="tab-buttons">
+              <button class="tab-btn active" onclick="filterTable('all', this)">すべて</button>
+              <button class="tab-btn" onclick="filterTable('new', this)">✨ 新規口座限定</button>
+              <button class="tab-btn" onclick="filterTable('1m', this)">1万円〜</button>
+              <button class="tab-btn" onclick="filterTable('100m', this)">100万円〜</button>
+            </div>
+          </div>
+
+          <!-- テーブル -->
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="col-rank">順位</th>
+                  <th class="col-bank">金融機関</th>
+                  <th class="col-product">商品名 / 期間</th>
+                  <th class="col-rate">年利 (%)</th>
+                  <th class="col-min">最低金額</th>
+                  <th class="col-desc">特徴・条件</th>
+                </tr>
+              </thead>
+              <tbody id="ranking-tbody">
+                <!-- JavaScriptでここに20件ロードされます -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-disclaimer">
+            <strong>（＊）元本保証についての注記：</strong><br>
+            銀行の定期預金は預金保険制度（ペイオフ）により、1金融機関につき元本1,000万円までとその利息が保護されます。また、個人向け国債は、日本国政府が元本と利息の支払いを保証しています。
+          </div>
+
+          <!-- トップページへ戻るボタン -->
+          <div class="back-btn-wrapper">
+            <a href="top.html" class="btn-back-to-top">
+              <span class="btn-arrow">⬅</span> トップページへ戻る
+            </a>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- 右サイドバー -->
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <div class="widget-title">⚡ 定番条件で一括試算</div>
+          <ul class="widget-list">
+            <li><span>🔹</span> <a href="result.html?amount=100&period=1&raw=100">100万円 × 1年運用</a></li>
+            <li><span>🔹</span> <a href="result.html?amount=300&period=3&raw=300">300万円 × 3年運用</a></li>
+            <li><span>🔹</span> <a href="result.html?amount=500&period=5&raw=500">500万円 × 5年運用</a></li>
+            <li><span>🔻</span> <a href="result.html?amount=1000&period=0.25&raw=1000">1000万円 × 3ヶ月運用</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-widget">
+          <div class="widget-title">📚 失敗しない資産運用の基本</div>
+          <ul class="widget-list">
+            <li><span>📖</span> <a href="contents.html?id=payoff">ペイオフ（預金保険制度）上限1000万円の注意点</a></li>
+            <li><span>📖</span> <a href="contents.html?id=bonds">個人向け国債「変動10年」と「固定5年」の選び方</a></li>
+            <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン金利の適用条件・解約ペナルティ</a></li>
+            <li><span>📖</span> <a href="contents.html?id=types">元本割れしない？安全資産の全種類まとめ</a></li>
+            <li><span>📖</span> <a href="contents.html?id=security">ネット銀行の破たん時保護とセキュリティ</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-widget">
+          <div class="widget-title">📢 注目キャンペーン</div>
+          <div id="campaign-container"></div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- 統一フッター -->
+    <footer>
+      <div class="footer-nav">
+        <div><a href="top.html">ホーム</a></div>
+        <div><a href="tokusho.html">特定商取引法に基づく表記</a></div>
+        <div><a href="profile.html">管理人情報</a></div>
+      </div>
+      <div class="copyright">
+        Copyright 2026 © あんぜん資産なび All Rights Reserved.
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="menu.js"></script>
+  <script>
+    let rawDataList = [];
+
+    let lastScrollY = window.scrollY;
+    const header = document.getElementById('site-header');
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        header.classList.remove('header-hidden');
+      } else if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        header.classList.add('header-hidden');
+      } else if (currentScrollY < lastScrollY) {
+        header.classList.remove('header-hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    });
+
+    // --- キャンペーン枠の描画関数 ---
+    function renderCampaigns(campaigns) {
+      const container = document.getElementById('campaign-container');
+      if (container && campaigns.length > 0) {
+        container.innerHTML = campaigns.map(item => `
+          <div class="campaign-item">
+            <div class="campaign-header">
+              <span class="campaign-badge">注目</span>
+              <span class="campaign-bank">${item.bank || item.bankName || ''}</span>
+            </div>
+            <div class="campaign-product">${item.product || item.productName || ''}</div>
+            <div class="campaign-rate">年 ${parseFloat(item.rate).toFixed(2)}%</div>
+            ${item.campaignNote ? `<div class="campaign-note">※${item.campaignNote}</div>` : ''}
+          </div>
+        `).join('');
+      }
+    }
+
+    const defaultCampaigns = [
+      {
+        bank: "イオン銀行",
+        product: "特別金利定期預金 1ヶ月",
+        rate: 3.00,
+        campaignNote: "新規口座開設限定"
+      },
+      {
+        bank: "愛媛銀行",
+        product: "ひめぎんマイル定期 3ヶ月",
+        rate: 3.00,
+        campaignNote: "新資金限定・期間限定"
+      }
+    ];
+
+    async function loadRankingList() {
+      try {
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('data.json の取得に失敗');
+        const data = await response.json();
+        
+        rawDataList = data.map(item => {
+          if (item.bankName === '財務省' || item.productName.includes('国債')) {
+            item.bankName = '政府';
+          }
+          return item;
+        }).sort((a, b) => b.rate - a.rate).slice(0, 20);
+
+        renderTable(rawDataList);
+      } catch (error) {
+        console.warn('初期マスターデータ（全20件）で表示します。', error);
+        
+        // フォールバックデータ
+        rawDataList = [
+          { bankName: "イオン銀行", productName: "円定期預金<br>1ヶ月", rate: 3.00, minAmount: 1, description: "新規口座開設限定。1万円〜500万円。" },
+          { bankName: "愛媛銀行", productName: "四国八十八カ所支店<br>3ヶ月", rate: 3.00, minAmount: 100, description: "新たな資金での預け入れに限る。" },
+          { bankName: "広島銀行", productName: "インターネット専用<br>5年定期", rate: 2.20, minAmount: 50, description: "単利型。50万円以上1円単位。" },
+          { bankName: "政府", productName: "個人向け国債<br>変動10年", rate: 2.15, minAmount: 1, description: "日本国政府発行。半年ごとに金利見直し。" },
+          { bankName: "政府", productName: "個人向け国債<br>固定5年", rate: 2.06, minAmount: 1, description: "日本国政府発行。5年間金利固定で安心。" },
+          { bankName: "UI銀行", productName: "スーパー定期<br>1年", rate: 2.00, minAmount: 1, description: "アプリ専用銀行。短期間で手軽に運用。" },
+          { bankName: "ソニー銀行", productName: "円定期預金<br>6ヶ月", rate: 1.80, minAmount: 1, description: "ネット完結型。期間限定プログラム。" },
+          { bankName: "SBI新生銀行", productName: "パワーダイレクト<br>1年定期", rate: 1.50, minAmount: 30, description: "ネット限定。新規・既存利用可能。" },
+          { bankName: "あおぞら銀行", productName: "BANK The 定期<br>5年", rate: 1.40, minAmount: 50, description: "BANK支店限定。5年固定運用。" },
+          { bankName: "愛媛銀行", productName: "四国八十八カ所支店<br>5年", rate: 1.35, minAmount: 10, description: "10万円以上で長期固定運用。" },
+          { bankName: "オリックス銀行", productName: "eDirect円定期<br>3年", rate: 1.30, minAmount: 100, description: "中長期の安定運用に。100万円以上。" },
+          { bankName: "ゆうちょ銀行", productName: "定期預金<br>1年", rate: 1.25, minAmount: 1, description: "全国の店舗とATMがあり抜群の信頼感。" },
+          { bankName: "東京スター銀行", productName: "スターワン円定期<br>3年", rate: 1.25, minAmount: 50, description: "3年満期。ネット申し込み。" },
+          { bankName: "あおぞら銀行", productName: "BANK The 定期<br>3年", rate: 1.25, minAmount: 50, description: "BANK支店限定。3年固定金利。" },
+          { bankName: "三菱UFJ銀行", productName: "定期預金<br>1年", rate: 1.20, minAmount: 1, description: "3大メガバンクの安心感。ペイオフ保護枠。" },
+          { bankName: "東京スター銀行", productName: "スターワン円定期<br>1年", rate: 1.20, minAmount: 50, description: "店頭またはネットで作成可能。" },
+          { bankName: "香川銀行", productName: "セルフうどん支店<br>1年", rate: 1.05, minAmount: 10, description: "全国から開設・運用可能。" },
+          { bankName: "愛媛銀行", productName: "四国八十八カ所支店<br>1年", rate: 1.05, minAmount: 100, description: "1口100万円単位。1000万円まで。" },
+          { bankName: "SBI新生銀行", productName: "スタートアップ<br>3ヶ月", rate: 1.00, minAmount: 30, description: "新規口座開設者限定枠。" },
+          { bankName: "オリックス銀行", productName: "eDirect円定期<br>1年", rate: 0.85, minAmount: 100, description: "100万円以上1円単位。" }
+        ];
+
+        renderTable(rawDataList);
+      }
+    }
+
+    function renderTable(items) {
+      const tbody = document.getElementById('ranking-tbody');
+      tbody.innerHTML = '';
+
+      items.forEach((item, index) => {
+        const rank = index + 1;
+        let rankClass = 'rank-num';
+        if (rank === 1) rankClass += ' r1';
+        else if (rank === 2) rankClass += ' r2';
+        else if (rank === 3) rankClass += ' r3';
+
+        const minAmtText = item.minAmount ? `${item.minAmount}万円` : '1万円〜';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="col-rank"><span class="${rankClass}">${rank}</span></td>
+          <td class="col-bank">${item.bankName}</td>
+          <td class="col-product">${item.productName}</td>
+          <td class="col-rate">年 ${Number(item.rate).toFixed(2)}%</td>
+          <td class="col-min">${minAmtText}</td>
+          <td class="col-desc">${item.description || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable(category, btnElement) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      let filtered = rawDataList;
+
+      if (category === 'new') {
+        filtered = rawDataList.filter(item => 
+          (item.description && item.description.includes('新規')) || 
+          (item.productName && item.productName.includes('新規'))
+        );
+      } else if (category === '1m') {
+        filtered = rawDataList.filter(item => !item.minAmount || item.minAmount <= 10);
+      } else if (category === '100m') {
+        filtered = rawDataList.filter(item => item.minAmount && item.minAmount >= 100);
+      }
+
+      renderTable(filtered);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCampaigns(defaultCampaigns);
+      loadRankingList();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">特集記事 | あんぜん資産なび</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kiwi Maru', sans-serif, serif;
+      color: #334155;
+      background-color: #f7f9fa;
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* --- 背景散らしイラストエリア（静止配置・左右8個） --- */
+    .bg-decorations {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .decor-item {
+      position: absolute;
+      opacity: 0.55;
+    }
+
+    .decor-left-1 { top: 150px;  left: 2%;   width: 110px; transform: rotate(-12deg); }
+    .decor-left-2 { top: 650px;  left: 3.5%; width: 90px;  transform: rotate(15deg); }
+    .decor-left-3 { top: 1200px; left: 1.5%; width: 120px; transform: rotate(-8deg); }
+    .decor-left-4 { top: 1750px; left: 3%;   width: 95px;  transform: rotate(20deg); }
+
+    .decor-right-1 { top: 200px;  right: 2.5%; width: 130px; transform: rotate(8deg); }
+    .decor-right-2 { top: 700px;  right: 2%;   width: 100px; transform: rotate(-18deg); }
+    .decor-right-3 { top: 1250px; right: 3%;   width: 115px; transform: rotate(12deg); }
+    .decor-right-4 { top: 1800px; right: 1.5%; width: 105px; transform: rotate(-10deg); }
+
+    @media (max-width: 1150px) {
+      .bg-decorations { display: none; }
+    }
+
+    /* --- 1. ヘッダー --- */
+    header {
+      background-color: #dbeafe;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 2px dashed #93c5fd;
+      transition: transform 0.3s ease;
+    }
+
+    header.header-hidden { transform: translateY(-100%); }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 6px 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .tape-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1;
+      object-fit: fill;
+      filter: 
+        drop-shadow(1px 0 0 #ffffff)
+        drop-shadow(-1px 0 0 #ffffff)
+        drop-shadow(0 1px 0 #ffffff)
+        drop-shadow(0 -1px 0 #ffffff)
+        drop-shadow(1px 1px 0 #ffffff)
+        drop-shadow(-1px -1px 0 #ffffff)
+        drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .clip-img {
+      position: absolute;
+      top: -12px;
+      left: 28px;
+      width: 24px;
+      z-index: 3;
+    }
+
+    .site-title {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 
+        2px 2px 3px rgba(30, 41, 59, 0.6),
+        -1px -1px 0px rgba(148, 163, 184, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .menu-btn {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* --- 2. レイアウト --- */
+    .page-layout {
+      position: relative;
+      z-index: 1;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 90px 15px 40px 15px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* --- 3. 記事本文スタイル --- */
+    .article-container {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 2px 2px 0px #e2e8f0;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 15px;
+    }
+
+    .breadcrumb a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .article-header {
+      border-bottom: 2px dashed #cbd5e1;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .article-tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .article-title {
+      font-size: 1.5rem;
+      color: #1e293b;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .article-body h2 {
+      font-size: 1.15rem;
+      color: #1e293b;
+      border-left: 4px solid #3b82f6;
+      padding-left: 10px;
+      margin: 35px 0 15px 0;
+    }
+
+    .article-body p {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: #334155;
+      margin-bottom: 18px;
+    }
+
+    .article-body ul {
+      margin: 0 0 20px 0;
+      padding-left: 20px;
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    .article-body li {
+      margin-bottom: 8px;
+    }
+
+    .info-box {
+      background-color: #f0fdf4;
+      border: 2px solid #86efac;
+      border-radius: 10px;
+      padding: 15px 18px;
+      margin: 25px 0;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .back-btn-wrapper {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .back-top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 20px;
+      padding: 8px 20px;
+      color: #334155;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 0px #64748b;
+    }
+
+    /* --- サイドバーウィジェット --- */
+    .sidebar-widget {
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 14px 12px;
+      box-shadow: 2px 2px 0px #334155;
+    }
+
+    .widget-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+      padding-bottom: 6px;
+      border-bottom: 1.5px dashed #94a3b8;
+    }
+
+    .widget-list {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .widget-list a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: bold;
+      line-height: 1.3;
+    }
+
+    .widget-list a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 850px) {
+      .page-layout { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
+
+    /* --- 4. フッター --- */
+    footer {
+      position: relative;
+      z-index: 1;
+      background-color: #f5ebe0;
+      border-top: 2px dashed #d5bdaf;
+      padding: 30px 15px 20px 15px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
+
+    .footer-nav a {
+      color: #475569;
+      text-decoration: none;
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景散らしイラストエリア -->
+  <div class="bg-decorations">
+    <img src="images/rakugaki-01.png" class="decor-item decor-left-1" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-left-2" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-left-3" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-left-4" alt="">
+
+    <img src="images/rakugaki-02.png" class="decor-item decor-right-1" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-right-2" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-right-3" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-right-4" alt="">
+  </div>
+
+  <header id="site-header">
+    <a href="top.html" class="title-wrapper">
+      <img src="images/clip.png" class="clip-img" alt="" onerror="this.style.display='none'">
+      <img src="images/tape.png" class="tape-bg" alt="" onerror="this.style.display='none'">
+      <h1 class="site-title">あんぜん資産なび</h1>
+    </a>
+
+    <button class="menu-btn">
+      <span>☰</span> メニュー
+    </button>
+  </header>
+
+  <div class="page-layout">
+
+    <main class="main-content">
+      <div class="article-container">
+        <div class="breadcrumb">
+          <a href="top.html">ホーム</a> ➔ 特集記事
+        </div>
+
+        <div class="article-header">
+          <span class="article-tag" id="article-tag">基本解説</span>
+          <h1 class="article-title" id="article-title">記事タイトル</h1>
+        </div>
+
+        <div class="article-body" id="article-body">
+          <!-- JSでここに記事本文が動的に読み込まれます -->
+        </div>
+
+        <div class="back-btn-wrapper">
+          <a href="top.html" class="back-top-link">⬅ トップページへ戻る</a>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📚 その他の特集記事</div>
+        <ul class="widget-list">
+          <li><a href="contents.html?id=payoff">ペイオフ上限1000万円の注意点</a></li>
+          <li><a href="contents.html?id=bonds">個人向け国債の選び方</a></li>
+          <li><a href="contents.html?id=campaign">キャンペーン金利の注意点</a></li>
+          <li><a href="contents.html?id=types">安全資産の全種類まとめ</a></li>
+          <li><a href="contents.html?id=security">ネット銀行の安全性</a></li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <footer>
+    <div class="footer-nav">
+      <div><a href="top.html">ホーム</a></div>
+      <div><a href="tokusho.html">特定商取引法に基づく表記</a></div>
+      <div><a href="profile.html">管理人情報</a></div>
+    </div>
+    <div class="copyright">
+      Copyright 2026 © あんぜん資産なび All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    // ヘッダーのスクロール制御
+    let lastScrollY = window.scrollY;
+    const header = document.getElementById('site-header');
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        header.classList.remove('header-hidden');
+      } else if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        header.classList.add('header-hidden');
+      } else if (currentScrollY < lastScrollY) {
+        header.classList.remove('header-hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    });
+
+    // 記事データベース
+    const articles = {
+      'payoff': {
+        tag: '資産保護の基本',
+        title: 'ペイオフ（預金保険制度）上限1000万円の注意点と資産の守り方',
+        content: `
+          <p>預金保険制度（通称：ペイオフ）とは、万が一金融機関が経営破たんした場合に、預金者の資産を保護するために作られた国の制度です。普段私たちが何気なく利用している銀行口座ですが、破たんリスクに備えたルールを正しく理解しておくことが重要です。</p>
+
+          <h2>1. 保護される範囲と限度額は？</h2>
+          <p>ペイオフが適用される場合、1つの金融機関につき、預金者1人あたり<strong>「元本1,000万円までとその利息」</strong>が保護されます。</p>
+          <p>注意したいのは「1,000万円を超える部分」の扱いです。上限を超えた預金については、破たんした銀行の財産状況（回収できた貸付金など）に応じて支払われるため、一部または全部がカットされるリスクがあります。</p>
+
+          <h2>2. ペイオフ対象となる預金・対象外の預金</h2>
+          <p>銀行に預けているすべてのお金が同じように保護されるわけではありません。金融商品ごとの分類を把握しておきましょう。</p>
+          <ul>
+            <li><strong>全額保護されるもの：</strong> 決済用預金（当座預金や、無利息・要求払・決済サービスを提供する条件を満たす普通預金）</li>
+            <li><strong>1,000万円＋利息まで保護されるもの：</strong> 一般的な定期預金、普通預金、通知預金、積立預金など</li>
+            <li><strong>対象外となるもの：</strong> 外貨預金、譲渡性預金（CD）、投資信託、債券など</li>
+          </ul>
+
+          <div class="info-box">
+            💡 <strong>名義別のカウントに注意：</strong><br>
+            同じ銀行で「A支店」と「B支店」に口座を分かっていても、同一人物の名義であれば合算して1,000万円までしか保護されません。家族名義（夫・妻・子供）はそれぞれ別名義としてカウントされます。
+          </div>
+
+          <h2>3. 1,000万円を超える現金資産を守る実践的な対策</h2>
+          <p>手元に1,000万円以上の現金資産がある場合、安全に管理するための具体的な方法は以下の3つです。</p>
+          
+          <p><strong>① 複数の金融機関に分散する</strong><br>
+          最もシンプルな対策は、複数の銀行に口座を作り、それぞれ1,000万円未満に収まるよう資金を分散して預け入れる方法です。</p>
+
+          <p><strong>② 個人向け国債を活用する</strong><br>
+          国が発行する「個人向け国債」は、銀行のペイオフ枠とは別枠であり、発行元が国であるため元本保証の安全性が極めて高い商品です。購入限度額もなく、預金分散の手間を減らすことができます。</p>
+
+          <p><strong>③ 決済用預金口座を開設する</strong><br>
+          金利は付きませんが、無利息の「決済用預金」であれば1,000万円を超えても全額保護の対象となります。近々の事業資金や大きな決済用資金を一時的に置いておく場合に適しています。</p>
+
+          <h2>まとめ</h2>
+          <p>銀行の破たんは滅多に起きないものの、万が一の事態から大切な資産を守るには、日頃から「1銀行1,000万円まで」を目安に管理しておくことが安心につながります。</p>
+        `
+      },
+      'bonds': {
+        tag: '国債の基本',
+        title: '個人向け国債「変動10年」と「固定5年」の選び方',
+        content: `
+          <p>国が発行する「個人向け国債」は、元本割れのリスクがなく、1万円から購入できる最も安全な運用先のひとつです。自分に合ったタイプを正しく選ぶためのポイントを解説します。</p>
+
+          <h2>1. 個人向け国債の3つの基本タイプ</h2>
+          <p>個人向け国債には、満期と金利タイプの違いによって主に3つの種類があります。</p>
+          <p>それぞれの特徴を押さえておきましょう。</p>
+          <ul>
+            <li><strong>変動10年（変動金利型）：</strong> 半年ごとに適用金利が見直されるタイプ。金利が上昇する局面でも、世の中の金利に合わせて受け取れる利息が増えていくのが特徴です。</li>
+            <li><strong>固定5年（固定金利型）：</strong> 発行時の金利が満期まで変わらないタイプ。金利上昇の波には乗りませんが、確実に決まった利息を受け取りたい場合に適しています。</li>
+            <li><strong>固定3年（固定金利型）：</strong> 満期が短く、より短いスパンで資金を管理したい方向けの固定金利タイプです。</li>
+          </ul>
+
+          <h2>2. 「変動10年」と「固定5年」の比較</h2>
+          <p>個人向け国債の主流である「変動10年」と「固定5年」の違いとはなんでしょうか。</p>
+          <ul>
+            <li><strong>金利の動き：</strong> 変動10年は金利上昇に合わせて利回りアップ／固定5年は満期（5年）まで金利固定</li>
+            <li><strong>最低金利保証：</strong> どちらも年0.05%の最低金利が保証（世の中が超低金利になっても割れ込みません）</li>
+            <li><strong>途中解約ルール：</strong> どちらも発行から1年経過すればいつでも中途換金が可能（直前2回分の各利子相当額×0.79685が差引かれます）</li>
+          </ul>
+
+          <div class="info-box">
+            💡 <strong>中途換金の安心ポイント：</strong><br>
+            1年経過すれば国が元本割れなしで買い取ってくれるため、途中で急にお金が必要になった場合でも資産を減らす心配がありません。
+          </div>
+
+          <h2>まとめ</h2>
+          <p>安全に資金を増やしたい・守りたい場合、今後の金利上昇にも対応できる「変動10年」を選んでおくのも選択肢です。数年以内に使う予定があるお金は「固定5年」を選ぶなど、目的に合わせて上手に使い分けましょう。</p>
+        `
+      },
+      'campaign': {
+        tag: 'お得な裏ワザ？',
+        title: 'キャンペーン定期預金の「実質的な金利」と見極め方',
+        content: `
+          <p>ネット銀行などでよく見かける「特別金利キャンペーン 年3.0%！」といった魅惑的な数字。一見すると非常にお得に見えますが、実際に手元に入る利息を計算してみると「思ったより少なかった」と感じることがあります。高金利キャンペーンの裏にある仕組みと、本当のお得度（実質的な金利）を見極めるためのチェックポイントを解説します。</p>
+
+          <h2>1. 「年利」と「預入期間」のカラクリ</h2>
+          <p>キャンペーン金利を見るときに最も注意したいのが<strong>「預入期間」</strong>です。銀行が提示する金利は、基本的にすべて「1年間預けた場合」の年利表記となっています。</p>
+          <ul>
+            <li><strong>1ヶ月ものの特別金利（年3.0%）の場合：</strong> 年3.0%の12分の1（1ヶ月分）の金利しか適用されません。たとえば100万円を預けた場合、1年間の利息30,000円ではなく、1ヶ月分の利息（約2,500円）となります。</li>
+            <li><strong>3ヶ月ものの特別金利（年3.0%）の場合：</strong> 年3.0%の4分の1（3ヶ月分）が適用されるため、100万円を預けた場合の実質的な利息は約7,500円です。</li>
+          </ul>
+          <p>「表記されているパーセンテージ」だけでなく、「その金利が何ヶ月間適用されるのか」を確認することが重要です。</p>
+
+          <h2>2. 税金（20.315%）と実際の「手残り金額」</h2>
+          <p>定期預金の利息には、国税や地方税を合わせて<strong>20.315%の税金</strong>がかかります。そのため、計算された受取利息から約2割が自動的に差し引かれます。</p>
+
+          <div class="info-box">
+            <strong>【試算例】100万円を「特別金利 年3.0% / 3ヶ月」で預けた場合</strong><br>
+            ・額面利息：100万円 × 3.0% × (3/12) ＝ 約7,500円<br>
+            ・税金（20.315%）：約1,523円<br>
+            ・<strong>実際の受け取り額：約5,977円</strong>
+          </div>
+
+          <p>このように、実際に口座へ振り込まれる金額（手残り利息）は税引き後の数字になることを意識して注意しましょう。</p>
+
+          <h2>3. キャンペーン利用時の3つのチェックポイント</h2>
+          <p>高金利キャンペーンを賢く活用し、損をしないための判断基準は以下の3つです。</p>
+
+          <p><strong>① 新規口座開設の手間と信頼できる金融機関か：</strong><br>
+          口座開設の手続きや本人確認の手間を考慮しつつ、大切な資金を預けるに足る信頼できる金融機関かどうかをしっかり見極めましょう。</p>
+
+          <p><strong>② 満期後の金利（通常金利）はどうなるか：</strong><br>
+          キャンペーン期間が終わると、通常の超低金利に戻ります。満期後にそのまま放置せず、別の預け先へ移動させる計画を立てておくことが大切です。</p>
+
+          <p><strong>③ 資金移動の振込手数料がかからないか：</strong><br>
+          他行から資金を移す際や、満期後に元の銀行へ戻す際の手数料で利息が消えてしまわないよう、無料振込枠などをうまく活用しましょう。</p>
+
+          <h2>まとめ</h2>
+          <p>キャンペーン金利は、短期間で手堅く利息を得るための絶好のチャンスです。ただし、「表面上の年利」だけに惑わされず、<strong>「税引き後の手残り」「信頼性」「満期後の資金の移動先」</strong>までセットで確認したうえで、賢く活用しましょう。</p>
+        `
+      },
+      'types': {
+        tag: 'リスク比較',
+        title: '元本割れしない？安全資産の種類とリスク商品との比較',
+        content: `
+          <p>世の中には様々な資産運用法がありますが、元本保証が約束された商品は一握りです。<br>
+          大切な「守りの資金」を減らさないために、安全資産の種類とリスク商品との違いを整理しましょう。</p>
+
+          <h2>1. 元本割れしない「真の安全資産」3選</h2>
+          <p>「守りの資金」を置くべき安全資産の選択肢としては、主に以下の3つに絞られます。</p>
+          <ul>
+            <li><strong>円定期預金：</strong> 預金保険制度（ペイオフ）により、1銀行につき1,000万円＋その利息まで国が保護します。</li>
+            <li><strong>個人向け国債：</strong> 発行元が日本国であり、国が破たんしない限り元本と利息が保証されます。1年経過後は元本割れなしで中途換金も可能です。</li>
+            <li><strong>マネー・マーケット・ファンド（MMF）：</strong> 国債などの極めて安全性の高い短い債券で運用される投資信託です。元本保証ではありませんが、実績として極めて安全性が高い運用先です。</li>
+          </ul>
+
+          <h2>2. 「一見お得」に潜むリスク商品の罠</h2>
+          <p>高金利や高利回りをアピールしている金融商品の中には、以下のような特有のリスクを抱えているものがあります。</p>
+          <ul>
+            <li><strong>外貨定期預金：</strong> 金利は高いものの、為替変動（円高）によって「円換算すると元本割れするリスク」や為替手数料の負担があります。</li>
+            <li><strong>ボラティリティの高い株式・ベンチャー投資：</strong> 株価変動や企業の破たんにより、預けた資金の大半を失う可能性があります。</li>
+            <li><strong>ソーシャルレンディング・貸付型クラファン：</strong> 年利5〜8%など魅力的ですが、貸し倒れ（デフォルト）が発生すると元本が戻らないリスクがあります。</li>
+          </ul>
+          <p>どれだけ利回りが高く見えても、これらは「万が一のときに元本が減る可能性がある商品」です。</p>
+
+          <h2>まとめ</h2>
+          <p>「高利回り＝それ相応のリスクがある」というのが金融の基本ルールです。減らしたくない生活資金や近い将来使うお金は、外貨やソーシャルレンディングなどに惑わされず、ペイオフ対象の定期預金や個人向け国債などの「元本が守られた安全資産」でしっかり管理しましょう。</p>
+        `
+      },
+      'security': {
+        tag: '安心・安全',
+        title: 'ネット銀行って本当に安全？破たん時の保護と不正利用リスクの考え方',
+        content: `
+          <p>店舗を持たないネット金融サービスですが、制度上の安全性がしっかり確保されています。<br>
+          一方、破たん時の保護制度と「不正アクセス・乗っ取り発生時の補償対応」の違いについて知っておくことが大切です。</p>
+
+          <h2>1. 破たん時は大手銀行と全く同じ（ペイオフ対象）</h2>
+          <p>実店舗のないネット銀行であっても、国の「預金保険制度（ペイオフ）」が適用されます。万が一銀行が破たんした場合でも、大手対面銀行と同様に「預金者1人あたり元本1,000万円までとその利息」が全額保護されます。また、分別管理が徹底されているため制度上の安全性に差はありません。</p>
+
+          <h2>2. ネット口座で注意したい「不正利用・乗っ取り」リスク</h2>
+          <p>破たん保護とは別に、近年注目されているのが「パスワード流出や不正アクセスによる乗っ取り・不正出金」の問題です。</p>
+          <p>金融機関によって被害発生時の補償方針や自己責任比率の捉え方には違いが見られます。<br>例えば、大手総合証券や伝統的な金融機関では手厚い全額補償方針を掲げているケースが多い一方、ネット専業の証券・金融サービスではユーザー側の管理状況（パスワード使い回し等）によって補償割合が一定限度に留まる可能性が規約上示唆されている場合もあります。</p>
+
+          <h2>3. 自分でできる安全対策</h2>
+          <p>ネット口座を安全に運用するためには、金融機関のシステム任せにせず、以下の自衛策を徹底することが推奨されます。</p>
+          <ul>
+            <li><strong>ID・パスワードの使い回しを絶対に避ける</strong></li>
+            <li><strong>二段階認証（ワンタイムパスワード等）を必ず設定する</strong></li>
+            <li><strong>ログイン通知メールや出金制限機能をONにしておく</strong></li>
+          </ul>
+
+          <h2>まとめ</h2>
+          <p>ネット銀行やネット証券は非常に便利ですが、<strong>「万が一のシステムトラブル・乗っ取り被害時にどのような補償スタンスなのか」</strong>を把握し、二段階認証などのセキュリティ対策を自分自身でしっかり講じておくことが重要です。</p>
+        `
+      }
+    };
+
+    // URLの ?id= 渡されたパラメータから記事を表示
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get('id') || 'payoff';
+    const data = articles[articleId] || articles['payoff'];
+
+    document.getElementById('article-tag').textContent = data.tag;
+    document.getElementById('article-title').textContent = data.title;
+    document.getElementById('article-body').innerHTML = data.content;
+    document.getElementById('page-title').textContent = data.title + ' | あんぜん資産なび';
+  </script>
+  <script src="menu.js"></script>
+</body>
+</html>

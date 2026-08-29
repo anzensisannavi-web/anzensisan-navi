@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>あんぜん資産なび - ぴったり預け先</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    
+    html {
+      overflow-y: scroll;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kiwi Maru', sans-serif, serif;
+      color: #334155;
+      background-color: #f7f9fa;
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #dbeafe;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100vw;
+      z-index: 100;
+      border-bottom: 2px dashed #93c5fd;
+    }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 6px 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .tape-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1;
+      object-fit: fill;
+      filter: 
+        drop-shadow(1px 0 0 #ffffff)
+        drop-shadow(-1px 0 0 #ffffff)
+        drop-shadow(0 1px 0 #ffffff)
+        drop-shadow(0 -1px 0 #ffffff)
+        drop-shadow(1px 1px 0 #ffffff)
+        drop-shadow(-1px -1px 0 #ffffff)
+        drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .clip-img {
+      position: absolute;
+      top: -12px;
+      left: 28px;
+      width: 24px;
+      z-index: 3;
+    }
+
+    .site-title {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 
+        2px 2px 3px rgba(30, 41, 59, 0.6),
+        -1px -1px 0px rgba(148, 163, 184, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .menu-btn {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-wrapper {
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 100px 15px 60px 15px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+    }
+
+    .sidebar-widget {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 2px 2px 0px #cbd5e1;
+    }
+
+    .widget-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px dashed #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .widget-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .widget-list li {
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .widget-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .widget-list a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .widget-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- キャンペーン表示スタイル（list.htmlと同等） --- */
+    .campaign-item {
+      padding: 10px 0;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .campaign-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .campaign-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .campaign-badge {
+      display: inline-block;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 1px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .campaign-bank {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #1e293b;
+    }
+    .campaign-product {
+      font-size: 0.78rem;
+      color: #475569;
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+    .campaign-rate {
+      font-size: 0.92rem;
+      font-weight: bold;
+      color: #dc2626;
+    }
+    .campaign-note {
+      font-size: 0.68rem;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    .notice-box {
+      background: #fef3c7;
+      border: 1px solid #fde047;
+      color: #854d0e;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+      text-align: left;
+      display: none;
+    }
+
+    .condition-card {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin: 0 auto 24px auto;
+      max-width: 300px;
+      box-shadow: 2px 2px 0px #cbd5e1;
+    }
+
+    .condition-title {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    .condition-value {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #1e293b;
+    }
+
+    .result-section-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 16px;
+    }
+
+    .top3-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .topic-card {
+      position: relative;
+      background-color: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 2px 2px 0px #334155;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1;
+      min-height: 180px;
+    }
+
+    .card-bg-medal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .rank-badge-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .rank-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    .rank-1 { background-color: #eab308; padding-left: 16px; }
+    .rank-2 { background-color: #94a3b8; }
+    .rank-3 { background-color: #d97706; }
+
+    .crown-container {
+      position: absolute;
+      left: -6px;
+      top: -4px;
+      width: 18px;
+      height: 18px;
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+      z-index: 3;
+    }
+
+    .crown-icon {
+      width: 11px;
+      height: auto;
+    }
+
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: bold;
+      color: #1d4ed8;
+      margin: 0 0 6px 0;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-rate {
+      font-size: 0.98rem;
+      font-weight: bold;
+      color: #059669;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.72rem;
+      color: #475569;
+      line-height: 1.38;
+      margin-top: auto;
+      margin-bottom: 0;
+      min-height: 2.8em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .sub-ranking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .soft-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: left;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rank-badge-sub {
+      background-color: #64748b;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .soft-card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .soft-card-content h4 {
+      margin: 0 0 2px 0;
+      font-size: 0.88rem;
+      color: #1e293b;
+    }
+
+    .soft-card-content p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .suggestion-container {
+      margin: 0 auto 24px auto;
+      text-align: left;
+      width: 100%;
+    }
+
+    .cloud-message-box {
+      position: relative;
+      background: #fff1f2;
+      border: 2px solid #fda4af;
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(244, 63, 94, 0.06);
+      margin-bottom: 10px;
+    }
+
+    .cloud-body {
+      font-size: 0.88rem;
+      font-weight: bold;
+      color: #881337;
+      line-height: 1.45;
+    }
+
+    .cloud-highlight {
+      font-size: 1.05rem;
+      color: #e11d48;
+      font-weight: 700;
+      display: inline-block;
+      margin: 0 2px;
+    }
+
+    .suggested-card {
+      background: #fff5f5;
+      border: 1.5px solid #f43f5e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 1px 1px 0px #f43f5e;
+    }
+
+    .suggested-badge {
+      background: #e11d48;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: bold;
+      padding: 2px 10px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .suggested-card h4 {
+      margin: 0 0 4px 0;
+      font-size: 0.92rem;
+      color: #881337;
+    }
+
+    .suggested-card p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #4c0519;
+      line-height: 1.4;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background: #64748b;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 22px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: bold;
+    }
+
+    /* list.htmlと完全に統一したフッターCSS */
+    footer {
+      position: relative;
+      z-index: 1;
+      background-color: #f5ebe0;
+      border-top: 2px dashed #d5bdaf;
+      padding: 30px 15px 20px 15px;
+      text-align: center;
+      margin-top: auto;
+      width: 100%;
+    }
+    .footer-nav { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; font-size: 0.9rem; }
+    .footer-nav a { color: #475569; text-decoration: none; }
+    .copyright { font-size: 0.75rem; color: #94a3b8; }
+
+    @media (max-width: 850px) {
+      .page-wrapper {
+        flex-direction: column;
+        padding-top: 80px;
+      }
+      .sidebar {
+        width: 100%;
+      }
+      .top3-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="top.html" class="title-wrapper">
+      <img src="images/clip.png" class="clip-img" alt="" onerror="this.style.display='none'">
+      <img src="images/tape.png" class="tape-bg" alt="" onerror="this.style.display='none'">
+      <h1 class="site-title">あんぜん資産なび</h1>
+    </a>
+
+    <button class="menu-btn" type="button">
+      <span>☰</span> メニュー
+    </button>
+  </header>
+
+  <div class="page-wrapper">
+
+    <main class="main-content">
+
+      <div id="notice-box" class="notice-box"></div>
+
+      <div class="condition-card">
+        <div class="condition-title">🔍 ご指定の運用条件</div>
+        <div class="condition-value">
+          <span id="display-amount">-</span> 万円 ／ <span id="display-period">-</span>
+        </div>
+      </div>
+
+      <div class="result-section-title">🏆 ぴったり預け先 TOP5</div>
+
+      <div class="top3-grid">
+
+        <!-- 第1位 -->
+        <div class="topic-card">
+          <img src="images/medal-1.png" class="card-bg-medal" alt="" onerror="this.style.display='none'">
+          <div class="card-content">
+            <div class="rank-badge-wrapper">
+              <div class="crown-container">
+                <img src="images/crown.png" class="crown-icon" alt="👑" onerror="this.outerHTML='👑'">
+              </div>
+              <span class="rank-badge rank-1">第1位</span>
+            </div>
+            <div class="card-title" id="rank1-title"></div>
+            <div class="card-rate" id="rank1-rate"></div>
+            <p class="card-desc" id="rank1-desc"></p>
+          </div>
+        </div>
+
+        <!-- 第2位 -->
+        <div class="topic-card">
+          <img src="images/medal-2.png" class="card-bg-medal" alt="" onerror="this.style.display='none'">
+          <div class="card-content">
+            <div class="rank-badge-wrapper">
+              <span class="rank-badge rank-2">第2位</span>
+            </div>
+            <div class="card-title" id="rank2-title"></div>
+            <div class="card-rate" id="rank2-rate"></div>
+            <p class="card-desc" id="rank2-desc"></p>
+          </div>
+        </div>
+
+        <!-- 第3位 -->
+        <div class="topic-card">
+          <img src="images/medal-3.png" class="card-bg-medal" alt="" onerror="this.style.display='none'">
+          <div class="card-content">
+            <div class="rank-badge-wrapper">
+              <span class="rank-badge rank-3">第3位</span>
+            </div>
+            <div class="card-title" id="rank3-title"></div>
+            <div class="card-rate" id="rank3-rate"></div>
+            <p class="card-desc" id="rank3-desc"></p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sub-ranking-list">
+        <div class="soft-card">
+          <span class="rank-badge-sub">4位</span>
+          <div class="soft-card-content">
+            <h4 id="rank4-title"></h4>
+            <p id="rank4-desc"></p>
+          </div>
+        </div>
+
+        <div class="soft-card">
+          <span class="rank-badge-sub">5位</span>
+          <div class="soft-card-content">
+            <h4 id="rank5-title"></h4>
+            <p id="rank5-desc"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 提案枠 -->
+      <div class="suggestion-container" id="suggestion-box">
+        <div class="cloud-message-box">
+          <div class="cloud-body">
+            預入期間を1位のプランで<span id="sug-period-label">「3ヶ月」</span>にすると<br>
+            利息がさらに <span class="cloud-highlight" id="sug-diff-label">＋0円</span> 増えます！✨
+          </div>
+        </div>
+
+        <div class="suggested-card">
+          <span class="suggested-badge">💡 期間を変更した場合のおすすめ</span>
+          <h4 id="sug-card-title"></h4>
+          <p id="sug-card-desc"></p>
+        </div>
+      </div>
+
+      <a href="top.html" class="back-btn">← 条件をやり直す</a>
+
+    </main>
+
+    <!-- サイドバー -->
+    <aside class="sidebar">
+
+      <div class="sidebar-widget">
+        <div class="widget-title">⚡ 定番条件で一括試算</div>
+        <ul class="widget-list">
+          <li>🔹 <a href="result.html?amount=100&period=1&raw=100">100万円 × 1年運用</a></li>
+          <li>🔹 <a href="result.html?amount=300&period=3&raw=300">300万円 × 3年運用</a></li>
+          <li>🔹 <a href="result.html?amount=500&period=5&raw=500">500万円 × 5年運用</a></li>
+          <li>🔻 <a href="result.html?amount=1000&period=0.25&raw=1000">1000万円 × 3ヶ月運用</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-title">📚 失敗しない資産運用の基本</div>
+        <ul class="widget-list">
+          <li>📖 <a href="contents.html?id=payoff">ペイオフ（預金保険制度）上限1000万円の注意点</a></li>
+          <li>📖 <a href="contents.html?id=bonds">個人向け国債「変動10年」と「固定5年」の選び方</a></li>
+          <li>📖 <a href="contents.html?id=campaign">キャンペーン金利の適用条件・解約ペナルティ</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-title">📢 注目キャンペーン</div>
+        <div id="campaign-container"></div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- list.htmlと完全統一したフッター -->
+  <footer>
+    <div class="footer-nav">
+      <div><a href="top.html">ホーム</a></div>
+      <div><a href="tokusho.html">特定商取引法に基づく表記</a></div>
+      <div><a href="profile.html">管理人情報</a></div>
+    </div>
+    <div class="copyright">
+      Copyright 2026 © あんぜん資産なび All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- menu.js を読み込む -->
+  <script src="menu.js"></script>
+
+  <script>
+    // 試算用ロジック
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const periodConfig = {
+        "0.083": { label: "1ヶ月",  years: 0.0833, nextKey: "0.25" },
+        "0.25":  { label: "3ヶ月",  years: 0.25,   nextKey: "0.5" },
+        "0.5":   { label: "6ヶ月",  years: 0.5,    nextKey: "1" },
+        "1":     { label: "1年",    years: 1,      nextKey: "2" },
+        "2":     { label: "2年",    years: 2,      nextKey: "3" },
+        "3":     { label: "3年",    years: 3,      nextKey: "5" },
+        "5":     { label: "5年",    years: 5,      nextKey: "7" },
+        "7":     { label: "7年",    years: 7,      nextKey: "10" },
+        "10":    { label: "10年",   years: 10,     nextKey: null },
+        "20":    { label: "20年",   years: 20,     nextKey: null }
+      };
+
+      const rankingByPeriod = {
+        "0.083": [
+          { name: "定期預金1ヶ月：イオン銀行", rate: 3.0, desc: "新規口座開設限定。1万円以上500万円以下。インターネットバンキング登録要。" },
+          { name: "円定期預金1ヶ月：SBJ銀行", rate: 0.50, desc: "1ヶ月運用の定番。手軽に短期で組めるネット特別金利。" },
+          { name: "円定期預金1ヶ月：楽天銀行", rate: 0.35, desc: "マネーブリッジ適用で使い勝手の良い超短期定期枠。" },
+          { name: "円定期預金1ヶ月：住信SBIネット銀行", rate: 0.30, desc: "1ヶ月運用のネット専用優遇金利枠。" },
+          { name: "円定期預金1ヶ月：ソニー銀行", rate: 0.25, desc: "少額からでも手軽にスタートできる短期定期預金。" }
+        ],
+        "0.25": [
+          { name: "定期預金3ヶ月：愛媛銀行", rate: 3.0, desc: "新たな資金での預け入れに限る。100万円以上1,000万円以下。募集総額200億円限定。" },
+          { name: "円定期預金3ヶ月：SBI新生銀行", rate: 1.0, desc: "スタートアップ円定期預金。新規口座開設で適用される高金利枠。" },
+          { name: "円定期預金3ヶ月：SBJ銀行", rate: 0.60, desc: "3ヶ月満期のネット特別金利枠。" },
+          { name: "円定期預金3ヶ月：ソニー銀行", rate: 0.40, desc: "期間限定キャンペーン金利でお得に運用。" },
+          { name: "円定期預金3ヶ月：auじぶん銀行", rate: 0.35, desc: "セット運用や条件達成で手軽に組める短期定期。" }
+        ],
+        "0.5": [
+          { name: "定期預金6ヶ月：SBI新生銀行", rate: 1.0, desc: "スタートアップ円定期預金。新規口座開設者限定。" },
+          { name: "定期預金6ヶ月：あおぞら銀行 BANK", rate: 0.75, desc: "アプリで簡単に始められる6ヶ月特別金利。" },
+          { name: "定期預金6ヶ月：SBJ銀行", rate: 0.65, desc: "手堅く半年運用したい方向けのネット高水準枠。" },
+          { name: "定期預金6ヶ月：楽天銀行", rate: 0.50, desc: "ボーナス時期にあわせた優遇キャンペーン枠。" },
+          { name: "定期預金6ヶ月：住信SBIネット銀行", rate: 0.40, desc: "ネット手続で完結する使い勝手の良い半年定期。" }
+        ],
+        "1": [
+          { name: "BANK The 定期 1年：あおぞら銀行", rate: 1.20, desc: "好金利な1年定期預金。アプリで簡単に預け入れが可能。" },
+          { name: "定期預金1年：SBI新生銀行", rate: 1.15, desc: "ネットで手軽に組み組める1年定期。特別金利枠。" },
+          { name: "定期預金1年：SBJ銀行", rate: 1.10, desc: "1年満期の高金利商品。100万円以上の預入でさらに好条件。" },
+          { name: "定期預金1年：オリックス銀行", rate: 1.00, desc: "eダイレクト預金。100万円以上から手軽に組める枠。" },
+          { name: "定期預金1年：楽天銀行", rate: 0.80, desc: "マネーブリッジ連動で手堅く増やす1年定期。" }
+        ],
+        "2": [
+          { name: "定期預金2年：オリックス銀行", rate: 1.50, desc: "eダイレクト預金。インターネット専用の特別金利枠。" },
+          { name: "定期預金2年：SBJ銀行", rate: 1.35, desc: "2年じっくり増やしたい方向けの好金利定期。" },
+          { name: "定期預金2年：あおぞら銀行 BANK", rate: 1.25, desc: "店舗を持たないBANK支店限定の高金利枠。" },
+          { name: "定期預金2年：SBI新生銀行", rate: 1.20, desc: "ネットバンキングで完結する2年型定期。" },
+          { name: "定期預金2年：ソニー銀行", rate: 0.90, desc: "計画的な資産作りに適した2年定期枠。" }
+        ],
+        "3": [
+          { name: "定期預金3年：SBJ銀行", rate: 1.65, desc: "100万円以上の定期預金。ネット手続限定の特別高金利枠。" },
+          { name: "定期預金3年：オリックス銀行", rate: 1.55, desc: "中長期の安定運用に適したeダイレクト3年定期。" },
+          { name: "定期預金3年：あおぞら銀行 BANK", rate: 1.35, desc: "アプリ限定で組み組める安心の3年定期。" },
+          { name: "定期預金3年：SBI新生銀行", rate: 1.25, desc: "手堅い3年運用枠。ネット限定金利。" },
+          { name: "定期預金3年：静岡銀行インターネット支店", rate: 1.10, desc: "全国どこからでも申込可能なネット専用定期。" }
+        ],
+        "5": [
+          { name: "定期預金5年：広島銀行", rate: 2.20, desc: "単利型。50万円以上1円単位。期間限定キャンペーン枠。" },
+          { name: "個人向け国債 第185回 固定5年：財務省", rate: 2.10, desc: "5年満期の固定金利。50万円以上1円単位で投資可能。極めて高い安全性が特徴。" },
+          { name: "定期預金5年：SBJ銀行", rate: 1.80, desc: "5年型の高金利定期。長期で確実に増やしたい方向け。" },
+          { name: "定期預金5年：オリックス銀行", rate: 1.70, desc: "eダイレクト預金のロングセラー商品。" },
+          { name: "定期預金5年：あおぞら銀行 BANK", rate: 1.50, desc: "5年じっくり預ける安心の好金利定期。" }
+        ],
+        "7": [
+          { name: "個人向け国債 固定7年：財務省", rate: 1.80, desc: "7年満期の固定金利。国債ならではの確実な安全性が魅力。" },
+          { name: "定期預金7年：オリックス銀行", rate: 1.75, desc: "超長期の資金固定で高金利を享受できる枠。" },
+          { name: "定期預金7年：SBJ銀行", rate: 1.60, desc: "長期資金の置き場として最適な7年定期。" },
+          { name: "定期預金7年：地方銀行ネット支店", rate: 1.30, desc: "ネット限定で全国から預入可能な長期枠。" },
+          { name: "定期預金7年：大手ネット銀行", rate: 1.10, desc: "7年固定でじっくり運用する安全枠。" }
+        ],
+        "10": [
+          { name: "個人向け国債 変動10年：財務省", rate: 2.10, desc: "半年ごとに金利が見直される変動金利。金利上昇局面にも強く1000万円以上も安全。" },
+          { name: "定期預金10年：オリックス銀行", rate: 1.85, desc: "最長10年の固定金利。長期の確実な運用に。" },
+          { name: "定期預金10年：SBJ銀行", rate: 1.70, desc: "10年長期型。将来の資金計画にあわせた運用。" },
+          { name: "定期預金10年：地方銀行ネット支店", rate: 1.40, desc: "安定した高金利を提供する10年枠。" },
+          { name: "定期預金10年：大手ネット銀行", rate: 1.20, desc: "10年長期運用のスタンダード商品。" }
+        ],
+        "20": [
+          { name: "超長期国債 20年型：財務省", rate: 2.50, desc: "超長期運用に最適な超高信頼性の国債。" },
+          { name: "個人向け国債 変動10年（2回繰越）：財務省", rate: 2.10, desc: "10年満期後に再投資して20年長期運用を目指す枠。" },
+          { name: "定期預金10年（2回繰越）：オリックス銀行", rate: 1.85, desc: "10年定期の複利再投資運用。" },
+          { name: "定期預金10年（2回繰越）：SBJ銀行", rate: 1.70, desc: "超長期目線での定期預金リレー運用。" },
+          { name: "超長期運用専用ファンド：ネット銀行", rate: 1.50, desc: "超長期で安定した利回りを狙う安全運用枠。" }
+        ]
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const rawPeriod = params.get('period') || "0.083";
+      const pConfig = periodConfig[rawPeriod] || periodConfig["0.083"];
+      const amountVal = parseFloat(params.get('amount')) || 100;
+      const rawAmount = params.get('raw');
+
+      document.getElementById('display-amount').textContent = amountVal;
+      document.getElementById('display-period').textContent = pConfig.label;
+
+      const noticeBox = document.getElementById('notice-box');
+      if (rawAmount && parseFloat(rawAmount) !== amountVal) {
+        if (parseFloat(rawAmount) < 1) {
+          noticeBox.textContent = `※入力金額（${rawAmount}万円）が1万円未満のため、最小単位の「1万円」で試算しています。`;
+        } else {
+          noticeBox.textContent = `※入力金額（${rawAmount}万円）の端数を四捨五入し、「${amountVal}万円」で試算しています。`;
+        }
+        noticeBox.style.display = 'block';
+      }
+
+      const calcInterest = (amt, rate, years) => {
+        const principal = amt * 10000;
+        const grossInterest = principal * (rate / 100) * years;
+        return Math.floor(grossInterest * (1 - 0.20315));
+      };
+
+      const currentList = rankingByPeriod[rawPeriod] || rankingByPeriod["0.083"];
+      const rank1Prod = currentList[0];
+      const rank1Interest = calcInterest(amountVal, rank1Prod.rate, pConfig.years);
+
+      document.getElementById('rank1-title').textContent = rank1Prod.name;
+      document.getElementById('rank1-rate').textContent = `年利 ${rank1Prod.rate.toFixed(1)}% (+${rank1Interest.toLocaleString()}円)`;
+      document.getElementById('rank1-desc').textContent = rank1Prod.desc;
+
+      currentList.slice(1, 5).forEach((prod, idx) => {
+        const rank = idx + 2;
+        const interest = calcInterest(amountVal, prod.rate, pConfig.years);
+        const formattedInterest = interest.toLocaleString();
+
+        if (rank <= 3) {
+          document.getElementById(`rank${rank}-title`).textContent = prod.name;
+          document.getElementById(`rank${rank}-rate`).textContent = `年利 ${prod.rate.toFixed(1)}% (+${formattedInterest}円)`;
+          document.getElementById(`rank${rank}-desc`).textContent = prod.desc;
+        } else {
+          document.getElementById(`rank${rank}-title`).textContent = `${prod.name} （年利 ${prod.rate.toFixed(2)}% / +${formattedInterest}円）`;
+          document.getElementById(`rank${rank}-desc`).textContent = prod.desc;
+        }
+      });
+
+      const sugBox = document.getElementById('suggestion-box');
+
+      if (!pConfig.nextKey) {
+        sugBox.style.display = 'none';
+      } else {
+        const nextConfig = periodConfig[pConfig.nextKey];
+        const nextList = rankingByPeriod[pConfig.nextKey] || [];
+        
+        if (nextList.length > 0) {
+          const nextRank1Prod = nextList[0];
+          const nextInterest = calcInterest(amountVal, nextRank1Prod.rate, nextConfig.years);
+          const diffInterest = nextInterest - rank1Interest;
+
+          if (diffInterest <= 0) {
+            sugBox.style.display = 'none';
+          } else {
+            sugBox.style.display = 'block';
+            document.getElementById('sug-period-label').textContent = `「${nextConfig.label}」`;
+            document.getElementById('sug-diff-label').textContent = `＋${diffInterest.toLocaleString()}円`;
+            document.getElementById('sug-card-title').textContent = nextRank1Prod.name;
+            document.getElementById('sug-card-desc').textContent = `預入期間を${nextConfig.label}に伸ばすことで受取利息が +${diffInterest.toLocaleString()}円 増えます。`;
+          }
+        } else {
+          sugBox.style.display = 'none';
+        }
+      }
+
+    });
+  </script>
+</body>
+</html>

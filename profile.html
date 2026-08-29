@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理人情報 | あんぜん資産なび</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kiwi Maru', sans-serif, serif;
+      color: #334155;
+      background-color: #f7f9fa;
+      /* 方眼紙の背景を維持 */
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 左右の背景イラスト配置エリア */
+    .bg-decorations {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* クリックを邪魔しない */
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .decor-item {
+      position: absolute;
+      opacity: 0.6; /* 方眼紙になじむ透過度 */
+    }
+
+    /* 左上：rakugaki-01（中サイズ・少し左に傾ける） */
+    .decor-left-top {
+      top: 140px;
+      left: 2%;
+      width: 110px;
+      transform: rotate(-12deg);
+    }
+
+    /* 左下：rakugaki-02（小サイズ・右に傾ける） */
+    .decor-left-bottom {
+      top: 520px;
+      left: 4%;
+      width: 85px;
+      transform: rotate(15deg);
+    }
+
+    /* 右上：rakugaki-02（大サイズ・右に傾ける） */
+    .decor-right-top {
+      top: 180px;
+      right: 3%;
+      width: 130px;
+      transform: rotate(8deg);
+    }
+
+    /* 右下：rakugaki-01（中サイズ・左に傾ける） */
+    .decor-right-bottom {
+      top: 560px;
+      right: 2%;
+      width: 95px;
+      transform: rotate(-18deg);
+    }
+
+    /* 画面幅が狭いスマホ表示時は隠す設定 */
+    @media (max-width: 1150px) {
+      .bg-decorations { display: none; }
+    }
+
+    /* ヘッダー */
+    header {
+      background-color: #dbeafe;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 2px dashed #93c5fd;
+    }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 6px 20px;
+      text-decoration: none;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 8px;
+    }
+
+    .tape-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1;
+      object-fit: fill;
+      filter: 
+        drop-shadow(1px 0 0 #ffffff)
+        drop-shadow(-1px 0 0 #ffffff)
+        drop-shadow(0 1px 0 #ffffff)
+        drop-shadow(0 -1px 0 #ffffff)
+        drop-shadow(1px 1px 0 #ffffff)
+        drop-shadow(-1px -1px 0 #ffffff)
+        drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .clip-img {
+      position: absolute;
+      top: -12px;
+      left: 28px;
+      width: 24px;
+      z-index: 3;
+    }
+
+    .site-title {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 
+        2px 2px 3px rgba(30, 41, 59, 0.6),
+        -1px -1px 0px rgba(148, 163, 184, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .menu-btn {
+      background: #ffffff;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* レイアウト */
+    .page-layout {
+      position: relative;
+      z-index: 1; /* イラストより前面に配置 */
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 100px 15px 40px 15px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* メインカード */
+    .card-box {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    /* カラフルな丸文字タイトル */
+    .page-title-bubbles {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 24px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .title-bubble {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background-color: #ffffff;
+      border-width: 2px;
+      border-style: solid;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.08);
+    }
+
+    /* 各カラー設定 (赤, 黄, 緑, 青, 紫) */
+    .bubble-red    { border-color: #f87171; color: #dc2626; background-color: #fef2f2; }
+    .bubble-yellow { border-color: #facc15; color: #ca8a04; background-color: #fefce8; }
+    .bubble-green  { border-color: #4ade80; color: #16a34a; background-color: #f0fdf4; }
+    .bubble-blue   { border-color: #60a5fa; color: #2563eb; background-color: #eff6ff; }
+    .bubble-purple { border-color: #c084fc; color: #9333ea; background-color: #faf5ff; }
+
+    /* 運営者紹介ブロック */
+    .admin-intro-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .admin-icon {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #94a3b8;
+      background-color: #e2e8f0;
+      flex-shrink: 0;
+    }
+
+    .admin-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .admin-name-title {
+      font-size: 1.0rem;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin: 0 0 8px 0;
+    }
+
+    .admin-bio {
+      font-size: 0.88rem;
+      color: #475569;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* コンテンツスタイル */
+    .profile-section p {
+      margin: 0 0 16px 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .profile-section ul {
+      margin: 0 0 20px 0;
+      padding-left: 20px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .profile-section li {
+      margin-bottom: 6px;
+    }
+
+    /* ボタン */
+    .back-btn-wrapper {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      color: #334155;
+      border: 2px solid #64748b;
+      border-radius: 20px;
+      padding: 8px 24px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 0px #64748b;
+      transition: transform 0.1s ease;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* サイドバー */
+    .sidebar-widget {
+      background: #ffffff;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 14px 12px;
+      box-shadow: 2px 2px 0px #334155;
+    }
+
+    .widget-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+      padding-bottom: 6px;
+      border-bottom: 1.5px dashed #94a3b8;
+    }
+
+    .widget-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .widget-list a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: bold;
+    }
+
+    .widget-list a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 850px) {
+      .page-layout { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      .admin-intro-card {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      background-color: #f5ebe0;
+      border-top: 2px dashed #d5bdaf;
+      padding: 30px 15px 20px 15px;
+      text-align: center;
+    }
+    .footer-nav { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; font-size: 0.9rem; }
+    .footer-nav a { color: #475569; text-decoration: none; }
+    .copyright { font-size: 0.75rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <!-- 背景散らしイラストエリア -->
+  <div class="bg-decorations">
+    <img src="images/rakugaki-01.png" class="decor-item decor-left-top" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-left-bottom" alt="">
+    <img src="images/rakugaki-02.png" class="decor-item decor-right-top" alt="">
+    <img src="images/rakugaki-01.png" class="decor-item decor-right-bottom" alt="">
+  </div>
+
+  <header id="site-header">
+    <a href="top.html" class="title-wrapper">
+      <img src="images/clip.png" class="clip-img" alt="" onerror="this.style.display='none'">
+      <img src="images/tape.png" class="tape-bg" alt="" onerror="this.style.display='none'">
+      <h1 class="site-title">あんぜん資産なび</h1>
+    </a>
+    <button class="menu-btn">
+      <span>☰</span> メニュー
+    </button>
+  </header>
+
+  <div class="page-layout">
+    <main class="main-content">
+      <div class="card-box">
+        <!-- 赤、黄、緑、青、紫のカラフルタイトル -->
+        <div class="page-title-bubbles">
+          <span class="title-bubble bubble-red">管</span>
+          <span class="title-bubble bubble-yellow">理</span>
+          <span class="title-bubble bubble-green">人</span>
+          <span class="title-bubble bubble-blue">情</span>
+          <span class="title-bubble bubble-purple">報</span>
+        </div>
+        
+        <div class="profile-section">
+          <!-- 運営者紹介ブロック -->
+          <div class="admin-intro-card">
+            <img src="images/icon.png" class="admin-icon" alt="運営者アイコン" onerror="this.src='https://via.placeholder.com/85?text=Icon'">
+            <div class="admin-info">
+              <div class="admin-name-title">運営者：あんぜん資産なび 運営事務局</div>
+              <p class="admin-bio">
+                株式投資や債券を勉強中。趣味はポイ活とネットサーフィン。<br>
+                コーヒーと昼寝が習慣。ねこ派。
+              </p>
+            </div>
+          </div>
+
+          <p><strong>【サイト概要】</strong><br>
+          主に定期預金や安全性の高い資産運用情報をわかりやすく発信・比較する個人ブログです。</p>
+
+          <p><strong>【運営ポリシー】</strong></p>
+          <ul>
+            <li>広告枠以外のアフィリエイトリンク等を含めず、フラットな目線で情報をお届けします。</li>
+            <li>当サイトでは、特定の金融商品やサービスのサービス斡旋はいたしません。</li>
+            <li>客観的かつ最新のデータをもとに、わかりやすい情報を掲載します。</li>
+          </ul>
+
+          <p><strong>【免責事項・著作権】</strong></p>
+          <ul>
+            <li>当サイト内に掲載している文章・画像等の無断転載を禁止します。</li>
+            <li>万が一当サイトの情報によって生じた不利益・損害等について、一切の責任を負いかねますのであらかじめご了承ください。</li>
+          </ul>
+        </div>
+
+        <div class="back-btn-wrapper">
+          <a href="top.html" class="back-btn">⬅ トップページへ戻る</a>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📚 特集コンテンツ</div>
+        <ul class="widget-list">
+          <li><a href="contents.html?id=payoff">ペイオフ上限1000万円の注意点</a></li>
+          <li><a href="contents.html?id=bonds">個人向け国債の選び方</a></li>
+          <li><a href="contents.html?id=campaign">キャンペーン金利の注意点</a></li>
+          <li><a href="contents.html?id=types">安全資産の全種類まとめ</a></li>
+          <li><a href="contents.html?id=security">ネット銀行の安全性</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="footer-nav">
+      <div><a href="top.html">ホーム</a></div>
+      <div><a href="tokusho.html">特定商取引法に基づく表記</a></div>
+      <div><a href="profile.html">管理人情報</a></div>
+    </div>
+    <div class="copyright">
+      Copyright 2026 © あんぜん資産なび All Rights Reserved.
+    </div>
+  </footer>
+
+  <script src="menu.js"></script>
+</body>
+</html>
