@@ -152,7 +152,7 @@ function setupGlobalMenu() {
   }
 }
 
-// サイドバー全要素の一括共通更新（リンクなし・赤字金利・2件固定）
+// サイドバー全要素の一括共通更新
 function setupSidebar() {
   const sidebar = document.querySelector('.sidebar');
   if (!sidebar) return;
@@ -179,6 +179,15 @@ function setupSidebar() {
     </div>
   `;
 
+  // 完全に独立したウィジェットとしてスポンサーリンクを作成
+  const sponsorWidgetHtml = `
+    <div class="widget-title">🤝 スポンサーリンク</div>
+    <div id="sponsor-ad-area" style="text-align: center; min-height: 100px; display: flex; align-items: center; justify-content: center; background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 4px; padding: 10px; margin-top: 10px;">
+        https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL
+        <span style="font-size: 0.8rem; color: #a0aec0;">広告エリア</span>
+    </div>
+  `;
+
   const featureWidgetHtml = `
     <div class="widget-title">📚 失敗しない資産運用の基本</div>
     <ul class="widget-list">
@@ -202,6 +211,16 @@ function setupSidebar() {
       }
     }
   });
+
+  // 注目キャンペーンのウィジェットの「すぐ下」に、独立した新しいウィジェット（枠）を新しく挿入する
+  const campaignWidgetElement = Array.from(widgets).find(w => w.querySelector('.widget-title')?.textContent.includes('注目キャンペーン'));
+  if (campaignWidgetElement && !sidebar.querySelector('#sponsor-ad-area')) {
+    const newSponsorWidget = document.createElement('div');
+    newSponsorWidget.className = 'sidebar-widget';
+    newSponsorWidget.innerHTML = sponsorWidgetHtml;
+    // 注目キャンペーンの枠の次（後ろ）に挿入
+    campaignWidgetElement.after(newSponsorWidget);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
