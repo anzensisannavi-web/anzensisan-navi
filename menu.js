@@ -180,14 +180,13 @@ function setupSidebar() {
   `;
 
   // 完全に独立したウィジェットとしてスポンサーリンクを作成
-    const sponsorWidgetHtml = `
+  const sponsorWidgetHtml = `
     <div class="widget-title">🤝 スポンサーリンク</div>
     <div id="sponsor-ad-area" style="text-align: center; min-height: 100px; display: flex; align-items: center; justify-content: center; background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 4px; padding: 10px; margin-top: 10px;">
         <div style="text-align: center;">
             <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow"><img border="0" width="120" height="66" alt="" src="https://www828.a8.net/svt/bgt?aid=260829420519&wid=001&eno=01&mid=s00000011827001019000&mc=1"></a><img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" alt="">
         </div>
     </div>
-  `;
   `;
 
   const featureWidgetHtml = `
