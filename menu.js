@@ -7,10 +7,11 @@ const menuData = [
 ];
 
 function setupGlobalMenu() {
-  // 1. スライドメニュー用CSSを追加
+  // 1. スライドメニュー用CSSを追加（広告部分だけ標準フォントを指定するスタイルを入れました）
   const style = document.createElement('style');
   style.textContent = `
-    body, button, input, select, textarea {
+    /* スポンサーリンク内だけ文字を標準フォントにして、サイト全体の可愛いフォントはそのまま保護する */
+    #sponsor-ad-area, #sponsor-ad-area * {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     }
 
@@ -104,6 +105,7 @@ function setupGlobalMenu() {
   `;
   document.head.appendChild(style);
 
+  // 2. ドロワーHTML生成
   let menuLinksHtml = menuData.map(item => 
     `<li>
       <a href="${item.url}">
@@ -128,6 +130,7 @@ function setupGlobalMenu() {
   `;
   document.body.insertAdjacentHTML('beforeend', drawerHtml);
 
+  // 3. イベントバインド
   const menuBtns = document.querySelectorAll('.menu-btn, #menuBtn');
   const overlay = document.getElementById('drawerOverlay');
   const closeBtn = document.getElementById('drawerCloseBtn');
@@ -181,7 +184,7 @@ function setupSidebar() {
     </div>
   `;
 
-  // 画像バナーとテキストリンクの両方をきれいに中央配置して表示
+  // スポンサーリンクウィジェット（画像＆テキスト）
   const sponsorWidgetHtml = `
     <div class="widget-title">🤝 スポンサーリンク</div>
     <div id="sponsor-ad-area" style="background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 4px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.5;">
@@ -202,7 +205,7 @@ function setupSidebar() {
     <ul class="widget-list">
       <li><span>📖</span> <a href="contents.html?id=payoff">ペイオフ（預金保険制度）上限1000万円の注意点</a></li>
       <li><span>📖</span> <a href="contents.html?id=bonds">個人向け国債「変動10年」と「固定5年」の選び方</a></li>
-      <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン定期預金の<span>実質的な金利」と見極め方</a></li>
+      <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン定期預金の「実質的な金利」と見極め方</a></li>
       <li><span>📖</span> <a href="contents.html?id=types">元本割れしない？安全資産の全種類まとめ</a></li>
       <li><span>📖</span> <a href="contents.html?id=security">ネット銀行の破たん時保護とセキュリティ</a></li>
     </ul>
