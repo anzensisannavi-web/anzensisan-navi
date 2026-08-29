@@ -10,7 +10,6 @@ function setupGlobalMenu() {
   // 1. スライドメニュー用CSSを追加
   const style = document.createElement('style');
   style.textContent = `
-    /* フォントを一般的なものに指定（かわいい装飾をリセット） */
     body, button, input, select, textarea {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     }
@@ -105,7 +104,6 @@ function setupGlobalMenu() {
   `;
   document.head.appendChild(style);
 
-  // 2. ドロワーHTML生成
   let menuLinksHtml = menuData.map(item => 
     `<li>
       <a href="${item.url}">
@@ -130,7 +128,6 @@ function setupGlobalMenu() {
   `;
   document.body.insertAdjacentHTML('beforeend', drawerHtml);
 
-  // 3. イベントバインド
   const menuBtns = document.querySelectorAll('.menu-btn, #menuBtn');
   const overlay = document.getElementById('drawerOverlay');
   const closeBtn = document.getElementById('drawerCloseBtn');
@@ -184,14 +181,18 @@ function setupSidebar() {
     </div>
   `;
 
-  // スポンサーリンク（テキスト広告が綺麗に収まるようスタイリング）
+  // 画像バナーとテキストリンクの両方をきれいに中央配置して表示
   const sponsorWidgetHtml = `
     <div class="widget-title">🤝 スポンサーリンク</div>
     <div id="sponsor-ad-area" style="background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 4px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.5;">
-        <div style="text-align: left;">
-            <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow" style="display: none;"><img border="0" width="120" height="66" alt="" src="https://www828.a8.net/svt/bgt?aid=260829420519&wid=001&eno=01&mid=s00000011827001019000&mc=1"></a><img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" alt="">
-            <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" rel="nofollow" style="color: #2563eb; text-decoration: underline;">【クレジットのニチデン】は、振込・不動産担保・事業者などの各種ローンがございます。</a>
-            <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" alt="">
+        <div style="text-align: center;">
+            <div style="margin-bottom: 10px;">
+                <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow"><img border="0" width="120" height="66" alt="" src="https://www828.a8.net/svt/bgt?aid=260829420519&wid=001&eno=01&mid=s00000011827001019000&mc=1"></a><img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" alt="">
+            </div>
+            <div>
+                <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" rel="nofollow" style="color: #2563eb; text-decoration: underline;">【クレジットのニチデン】は、振込・不動産担保・事業者などの各種ローンがございます。</a>
+                <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" alt="">
+            </div>
         </div>
     </div>
   `;
@@ -201,7 +202,7 @@ function setupSidebar() {
     <ul class="widget-list">
       <li><span>📖</span> <a href="contents.html?id=payoff">ペイオフ（預金保険制度）上限1000万円の注意点</a></li>
       <li><span>📖</span> <a href="contents.html?id=bonds">個人向け国債「変動10年」と「固定5年」の選び方</a></li>
-      <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン定期預金の「実質的な金利」と見極め方</a></li>
+      <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン定期預金の<span>実質的な金利」と見極め方</a></li>
       <li><span>📖</span> <a href="contents.html?id=types">元本割れしない？安全資産の全種類まとめ</a></li>
       <li><span>📖</span> <a href="contents.html?id=security">ネット銀行の破たん時保護とセキュリティ</a></li>
     </ul>
@@ -220,13 +221,11 @@ function setupSidebar() {
     }
   });
 
-  // 注目キャンペーンのウィジェットの「すぐ下」に、独立した新しいウィジェット（枠）を新しく挿入する
   const campaignWidgetElement = Array.from(widgets).find(w => w.querySelector('.widget-title')?.textContent.includes('注目キャンペーン'));
   if (campaignWidgetElement && !sidebar.querySelector('#sponsor-ad-area')) {
     const newSponsorWidget = document.createElement('div');
     newSponsorWidget.className = 'sidebar-widget';
     newSponsorWidget.innerHTML = sponsorWidgetHtml;
-    // 注目キャンペーンの枠の次（後ろ）に挿入
     campaignWidgetElement.after(newSponsorWidget);
   }
 }
