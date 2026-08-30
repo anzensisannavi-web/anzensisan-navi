@@ -9,6 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
+    /* iPhone SEなどの狭い画面向けに全体を自動フィットさせる */
+    @media (max-width: 480px) {
+      body {
+        zoom: 0.80;
+      }
+    }
+
     * { box-sizing: border-box; }
     
     html {
@@ -654,7 +661,7 @@
           <li>🔹 <a href="result.html?amount=100&period=1&raw=100">100万円 × 1年運用</a></li>
           <li>🔹 <a href="result.html?amount=300&period=3&raw=300">300万円 × 3年運用</a></li>
           <li>🔹 <a href="result.html?amount=500&period=5&raw=500">500万円 × 5年運用</a></li>
-          <li>🔻 <a href="result.html?amount=1000&period=0.25&raw=1000">1000万円 × 3ヶ月運用</a></li>
+          <li>🔹 <a href="result.html?amount=1000&period=0.25&raw=1000">1000万円 × 3ヶ月運用</a></li>
         </ul>
       </div>
 
