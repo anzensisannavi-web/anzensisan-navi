@@ -44,7 +44,7 @@
 
     header {
       background-color: #dbeafe;
-      padding: 12px 25px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -54,20 +54,29 @@
       transition: transform 0.3s ease;
     }
     header.header-hidden { transform: translateY(-100%); }
-    .title-wrapper { position: relative; display: inline-block; padding: 6px 20px; text-decoration: none; cursor: pointer; border-radius: 8px; }
+    .title-wrapper { position: relative; display: inline-block; padding: 4px 10px; text-decoration: none; cursor: pointer; border-radius: 8px; }
     .tape-bg {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; object-fit: fill;
       filter: drop-shadow(1px 0 0 #ffffff) drop-shadow(-1px 0 0 #ffffff) drop-shadow(0 1px 0 #ffffff) drop-shadow(0 -1px 0 #ffffff) drop-shadow(1px 1px 0 #ffffff) drop-shadow(-1px -1px 0 #ffffff) drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
     }
-    .clip-img { position: absolute; top: -12px; left: 28px; width: 24px; z-index: 3; }
+    .clip-img { position: absolute; top: -10px; left: 20px; width: 20px; z-index: 3; }
     .site-title {
-      position: relative; z-index: 2; margin: 0; font-size: 1.5rem; font-weight: 700; color: #ffffff;
+      position: relative; z-index: 2; margin: 0; font-size: 1.25rem; font-weight: 700; color: #ffffff;
       text-shadow: 2px 2px 3px rgba(30, 41, 59, 0.6), -1px -1px 0px rgba(148, 163, 184, 0.4); letter-spacing: 0.05em;
     }
     .menu-btn {
-      background: #ffffff; border: 2px solid #64748b; border-radius: 8px; padding: 8px 14px;
-      font-family: inherit; font-size: 0.9rem; font-weight: bold; color: #334155; cursor: pointer;
-      box-shadow: 2px 2px 0px #64748b; display: flex; align-items: center; gap: 6px;
+      background: #ffffff; border: 2px solid #64748b; border-radius: 8px; padding: 6px 12px;
+      font-family: inherit; font-size: 0.85rem; font-weight: bold; color: #334155; cursor: pointer;
+      box-shadow: 2px 2px 0px #64748b; display: flex; align-items: center; gap: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      header { padding: 12px 25px; }
+      .title-wrapper { padding: 6px 20px; }
+      .clip-img { top: -12px; left: 28px; width: 24px; }
+      .site-title { font-size: 1.5rem; }
+      .menu-btn { padding: 8px 14px; font-size: 0.9rem; gap: 6px; }
     }
 
     .back-to-top {
