@@ -1036,7 +1036,7 @@
       });
     }
 
-    defFunction getAdjustedAmount(inputValue) {
+    function getAdjustedAmount(inputValue) {
       let val = parseFloat(inputValue);
       if (isNaN(val) || val < 1) return 1;
       return Math.round(val);
