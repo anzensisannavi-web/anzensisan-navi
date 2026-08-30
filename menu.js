@@ -232,15 +232,14 @@ function setupSidebar() {
       </div>
     `;
   } else {
-    // その他のダミーテキスト広告
+    // その他のダミーテキスト広告（スマホでも行崩れしないようレイアウト修正）
     sponsorContentHtml = `
-      <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 12px 14px; margin-top: 8px; text-align: center; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <span style="font-size: 0.8rem; font-weight: bold; color: #1e293b;">${randomAd.name}</span>
-          <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px;">${randomAd.badge}</span>
+      <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 12px 14px; margin-top: 8px; text-align: left; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 0.8rem; font-weight: bold; color: #1e293b; line-height: 1.3;">${randomAd.name}</span>
+          <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px; flex-shrink: 0;">${randomAd.badge}</span>
         </div>
-        <p style="font-size: 0.72rem; color: #475569; margin: 0 0 6px 0; line-height: 1.35; font-family: sans-serif;">${randomAd.description}</p>
-        
+        <p style="font-size: 0.72rem; color: #475569; margin: 0; line-height: 1.4; font-family: sans-serif;">${randomAd.description}</p>
       </div>
     `;
   }
