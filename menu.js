@@ -9,6 +9,26 @@ const menuData = [
 // スポンサー・広告のリストデータ
 const sponsorAds = [
   {
+    type: "html",
+    // ニチデンのバナー画像 ＋ テキストを1セットにして中央寄せ・通常フォントで出力
+    content: `
+      <div style="text-align: center; font-family: sans-serif, Arial, sans-serif;">
+        <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow" target="_blank" style="display: inline-block; margin-bottom: 8px;">
+          <img border="0" width="120" height="66" alt="" src="https://www4.a8.net/svt/bgt?aid=260829420519&wid=001&eno=01&mid=s00000011827001019000&mc=1" style="display: block; margin: 0 auto;">
+        </a>
+        <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" alt="" style="display:none;">
+        <div>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow" target="_blank" style="font-size: 0.78rem; color: #2563eb; text-decoration: underline; line-height: 1.4; display: inline-block;">
+            【クレジットのニチデン】は、振込・不動産担保・事業者などの各種ローンがございます。
+          </a>
+        </div>
+      </div>
+    `,
+    bgColor: "#ffffff",
+    borderColor: "#e2e8f0"
+  },
+  {
+    type: "custom",
     name: "あんぜん運用サポート窓口",
     description: "元本保証の資産運用や国債の購入方法について無料で学べるガイド",
     url: "#",
@@ -17,20 +37,13 @@ const sponsorAds = [
     borderColor: "#3b82f6"
   },
   {
+    type: "custom",
     name: "ネット銀行金利チェッカー",
     description: "主要ネット銀行の最新キャンペーン金利をリアルタイムで比較",
     url: "#",
     badge: "PR",
     bgColor: "#ecfdf5",
     borderColor: "#10b981"
-  },
-  {
-    name: "安全資産シミュレーションLab",
-    description: "複利効果やインフレに負けない堅実な資産づくりのためのツール集",
-    url: "#",
-    badge: "PR",
-    bgColor: "#fdf6ed",
-    borderColor: "#f59e0b"
   }
 ];
 
@@ -207,19 +220,34 @@ function setupSidebar() {
     </div>
   `;
 
-  // sponsorAds 配列からランダムに1件選ぶ処理
+  // sponsorAds 配列からランダムに1件選ぶ
   const randomAd = sponsorAds[Math.floor(Math.random() * sponsorAds.length)];
+
+  let sponsorContentHtml = '';
+  if (randomAd.type === 'html') {
+    // ニチデンのHTMLコード（画像＋中央寄せテキスト）
+    sponsorContentHtml = `
+      <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 12px 10px; margin-top: 8px; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
+        ${randomAd.content}
+      </div>
+    `;
+  } else {
+    // その他のダミーテキスト広告
+    sponsorContentHtml = `
+      <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 12px 14px; margin-top: 8px; text-align: center; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+          <span style="font-size: 0.8rem; font-weight: bold; color: #1e293b;">${randomAd.name}</span>
+          <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px;">${randomAd.badge}</span>
+        </div>
+        <p style="font-size: 0.72rem; color: #475569; margin: 0 0 6px 0; line-height: 1.35; font-family: sans-serif;">${randomAd.description}</p>
+        <a href="${randomAd.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.72rem; font-weight: bold; color: #2563eb; text-decoration: none;">詳しく見る ➔</a>
+      </div>
+    `;
+  }
 
   const sponsorWidgetHtml = `
     <div class="widget-title">🤝 スポンサーリンク</div>
-    <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 10px 12px; margin-top: 8px; text-align: left; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-        <span style="font-size: 0.8rem; font-weight: bold; color: #1e293b;">${randomAd.name}</span>
-        <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px;">${randomAd.badge}</span>
-      </div>
-      <p style="font-size: 0.72rem; color: #475569; margin: 0 0 6px 0; line-height: 1.35;">${randomAd.description}</p>
-      <a href="${randomAd.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.72rem; font-weight: bold; color: #2563eb; text-decoration: none;">詳しく見る ➔</a>
-    </div>
+    ${sponsorContentHtml}
   `;
 
   const featureWidgetHtml = `
@@ -246,7 +274,6 @@ function setupSidebar() {
     }
   });
 
-  // 注目キャンペーンの枠の次（後ろ）に、ランダム選出されたスポンサーウィジェットを挿入
   const campaignWidgetElement = Array.from(widgets).find(w => w.querySelector('.widget-title')?.textContent.includes('注目キャンペーン'));
   if (campaignWidgetElement && !sidebar.querySelector('#sponsor-random-widget')) {
     const newSponsorWidget = document.createElement('div');
