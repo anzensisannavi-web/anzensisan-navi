@@ -39,7 +39,7 @@ const sponsorAds = [
   {
     type: "custom",
     name: "ゆるっと安全運用データ",
-    description: "主要銀行・ネット銀行のキャンペーン"<br>"金利を比較！",
+    description: "主要銀行・ネット銀行のキャンペーン<br>金利を比較！",
     url: "#",
     badge: "PR",
     bgColor: "#ecfdf5",
