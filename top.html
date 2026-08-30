@@ -112,7 +112,7 @@
     /* --- 3. ヘッダー --- */
     header {
       background-color: #dbeafe;
-      padding: 12px 25px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -123,6 +123,7 @@
       z-index: 100;
       border-bottom: 2px dashed #93c5fd;
       transition: transform 0.3s ease;
+      gap: 10px;
     }
 
     header.header-hidden {
@@ -132,11 +133,13 @@
     .title-wrapper {
       position: relative;
       display: inline-block;
-      padding: 6px 20px;
+      padding: 4px 12px;
       text-decoration: none;
       cursor: pointer;
       background-color: transparent;
       border-radius: 8px;
+      flex-shrink: 1;
+      min-width: 0;
     }
 
     .tape-bg {
@@ -156,9 +159,9 @@
 
     .clip-img {
       position: absolute;
-      top: -12px;
-      left: 28px;
-      width: 24px;
+      top: -10px;
+      left: 20px;
+      width: 22px;
       z-index: 3;
     }
 
@@ -166,29 +169,33 @@
       position: relative;
       z-index: 2;
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #ffffff;
       text-shadow: 
         2px 2px 3px rgba(30, 41, 59, 0.6),
         -1px -1px 0px rgba(148, 163, 184, 0.4);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .menu-btn {
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 6px 10px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
       color: #334155;
       cursor: pointer;
       box-shadow: 2px 2px 0px #64748b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
     .back-to-top {
@@ -971,7 +978,7 @@
             <li><span>📖</span> <a href="contents.html?id=payoff">ペイオフ（預金保険制度）上限1000万円の注意点</a></li>
             <li><span>📖</span> <a href="contents.html?id=bonds">個人向け国債「変動10年」と「固定5年」の選び方</a></li>
             <li><span>📖</span> <a href="contents.html?id=campaign">キャンペーン金利の適用条件・解約ペナルティ</a></li>
-            <li><span>📖</span> <a href="contents.html?id=types">元本割れしない？安全資産の全種類まとめ</a></li>
+            <li><span>📖</span> <a href="contents.html?id=types">元本割れしない？安全資産の種類まとめ</a></li>
             <li><span>📖</span> <a href="contents.html?id=security">ネット銀行の破たん時保護とセキュリティ</a></li>
           </ul>
         </div>
