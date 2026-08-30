@@ -6,15 +6,38 @@ const menuData = [
   { title: "特集コンテンツ", url: "contents.html" }
 ];
 
+// スポンサー・広告のリストデータ
+const sponsorAds = [
+  {
+    name: "あんぜん運用サポート窓口",
+    description: "元本保証の資産運用や国債の購入方法について無料で学べるガイド",
+    url: "#",
+    badge: "PR",
+    bgColor: "#eff6ff",
+    borderColor: "#3b82f6"
+  },
+  {
+    name: "ネット銀行金利チェッカー",
+    description: "主要ネット銀行の最新キャンペーン金利をリアルタイムで比較",
+    url: "#",
+    badge: "PR",
+    bgColor: "#ecfdf5",
+    borderColor: "#10b981"
+  },
+  {
+    name: "安全資産シミュレーションLab",
+    description: "複利効果やインフレに負けない堅実な資産づくりのためのツール集",
+    url: "#",
+    badge: "PR",
+    bgColor: "#fdf6ed",
+    borderColor: "#f59e0b"
+  }
+];
+
 function setupGlobalMenu() {
-  // 1. スライドメニュー用CSSを追加（広告部分だけ標準フォントを指定するスタイルを入れました）
+  // 1. スライドメニュー用CSSを追加
   const style = document.createElement('style');
   style.textContent = `
-    /* スポンサーリンク内だけ文字を標準フォントにして、サイト全体の可愛いフォントはそのまま保護する */
-    #sponsor-ad-area, #sponsor-ad-area * {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    }
-
     .drawer-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -157,7 +180,7 @@ function setupGlobalMenu() {
   }
 }
 
-// サイドバー全要素の一括共通更新
+// サイドバー全要素の一括共通更新 ＆ ランダム広告の挿入
 function setupSidebar() {
   const sidebar = document.querySelector('.sidebar');
   if (!sidebar) return;
@@ -184,19 +207,18 @@ function setupSidebar() {
     </div>
   `;
 
-  // スポンサーリンクウィジェット（画像＆テキスト）
+  // sponsorAds 配列からランダムに1件選ぶ処理
+  const randomAd = sponsorAds[Math.floor(Math.random() * sponsorAds.length)];
+
   const sponsorWidgetHtml = `
     <div class="widget-title">🤝 スポンサーリンク</div>
-    <div id="sponsor-ad-area" style="background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 4px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.5;">
-        <div style="text-align: center;">
-            <div style="margin-bottom: 10px;">
-                <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" rel="nofollow"><img border="0" width="120" height="66" alt="" src="https://www828.a8.net/svt/bgt?aid=260829420519&wid=001&eno=01&mid=s00000011827001019000&mc=1"></a><img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+62ENL" alt="">
-            </div>
-            <div>
-                <a href="https://px.a8.net/svt/ejp?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" rel="nofollow" style="color: #2563eb; text-decoration: underline;">【クレジットのニチデン】は、振込・不動産担保・事業者などの各種ローンがございます。</a>
-                <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4BAH9O+8KZZQQ+2J9A+60H7M" alt="">
-            </div>
-        </div>
+    <div style="background-color: ${randomAd.bgColor}; border: 2px solid ${randomAd.borderColor}; border-radius: 10px; padding: 10px 12px; margin-top: 8px; text-align: left; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <span style="font-size: 0.8rem; font-weight: bold; color: #1e293b;">${randomAd.name}</span>
+        <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px;">${randomAd.badge}</span>
+      </div>
+      <p style="font-size: 0.72rem; color: #475569; margin: 0 0 6px 0; line-height: 1.35;">${randomAd.description}</p>
+      <a href="${randomAd.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.72rem; font-weight: bold; color: #2563eb; text-decoration: none;">詳しく見る ➔</a>
     </div>
   `;
 
@@ -224,10 +246,12 @@ function setupSidebar() {
     }
   });
 
+  // 注目キャンペーンの枠の次（後ろ）に、ランダム選出されたスポンサーウィジェットを挿入
   const campaignWidgetElement = Array.from(widgets).find(w => w.querySelector('.widget-title')?.textContent.includes('注目キャンペーン'));
-  if (campaignWidgetElement && !sidebar.querySelector('#sponsor-ad-area')) {
+  if (campaignWidgetElement && !sidebar.querySelector('#sponsor-random-widget')) {
     const newSponsorWidget = document.createElement('div');
     newSponsorWidget.className = 'sidebar-widget';
+    newSponsorWidget.id = 'sponsor-random-widget';
     newSponsorWidget.innerHTML = sponsorWidgetHtml;
     campaignWidgetElement.after(newSponsorWidget);
   }
