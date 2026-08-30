@@ -29,7 +29,7 @@ const sponsorAds = [
   },
   {
     type: "custom",
-    name: "あんぜん運用サポート窓口",
+    name: "あんぜん運用特集コンテンツ",
     description: "元本保証の資産運用や国債の購入方法について無料で学べるガイド",
     url: "#",
     badge: "PR",
@@ -38,8 +38,8 @@ const sponsorAds = [
   },
   {
     type: "custom",
-    name: "ネット銀行金利チェッカー",
-    description: "主要ネット銀行の最新キャンペーン金利をリアルタイムで比較",
+    name: "ゆるっと安全運用データ",
+    description: "主要銀行・ネット銀行のキャンペーン金利を比較！",
     url: "#",
     badge: "PR",
     bgColor: "#ecfdf5",
@@ -240,7 +240,7 @@ function setupSidebar() {
           <span style="background-color: #64748b; color: #ffffff; font-size: 0.6rem; font-weight: bold; padding: 1px 5px; border-radius: 4px;">${randomAd.badge}</span>
         </div>
         <p style="font-size: 0.72rem; color: #475569; margin: 0 0 6px 0; line-height: 1.35; font-family: sans-serif;">${randomAd.description}</p>
-        <a href="${randomAd.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.72rem; font-weight: bold; color: #2563eb; text-decoration: none;">詳しく見る ➔</a>
+        
       </div>
     `;
   }
