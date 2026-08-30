@@ -9,13 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* iPhone SEなどの狭い画面向けに全体を自動フィットさせる */
-    @media (max-width: 480px) {
-      body {
-        zoom: 0.92;
-      }
-    }
-
     * { box-sizing: border-box; }
     
     html {
@@ -40,7 +33,7 @@
 
     header {
       background-color: #dbeafe;
-      padding: 12px 25px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -48,7 +41,6 @@
       top: 0;
       left: 0;
       width: 100%;
-      max-width: 100vw;
       z-index: 100;
       border-bottom: 2px dashed #93c5fd;
     }
@@ -56,7 +48,7 @@
     .title-wrapper {
       position: relative;
       display: inline-block;
-      padding: 6px 20px;
+      padding: 4px 12px;
       text-decoration: none;
       cursor: pointer;
     }
@@ -78,9 +70,9 @@
 
     .clip-img {
       position: absolute;
-      top: -12px;
-      left: 28px;
-      width: 24px;
+      top: -10px;
+      left: 20px;
+      width: 20px;
       z-index: 3;
     }
 
@@ -88,7 +80,7 @@
       position: relative;
       z-index: 2;
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #ffffff;
       text-shadow: 
@@ -101,23 +93,23 @@
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 6px 12px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
       color: #334155;
       cursor: pointer;
       box-shadow: 2px 2px 0px #64748b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     .page-wrapper {
       max-width: 1140px;
       width: 100%;
       margin: 0 auto;
-      padding: 100px 15px 60px 15px;
+      padding: 75px 12px 40px 12px;
       display: flex;
       gap: 24px;
       align-items: flex-start;
@@ -185,7 +177,7 @@
       text-decoration: underline;
     }
 
-    /* --- キャンペーン表示スタイル（list.htmlと同等） --- */
+    /* --- キャンペーン表示スタイル --- */
     .campaign-item {
       padding: 10px 0;
       border-bottom: 1px dashed #cbd5e1;
@@ -239,7 +231,7 @@
       padding: 10px 14px;
       border-radius: 8px;
       font-size: 0.8rem;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       text-align: left;
       display: none;
     }
@@ -248,29 +240,29 @@
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 10px;
-      padding: 10px 16px;
-      margin: 0 auto 24px auto;
-      max-width: 300px;
+      padding: 8px 14px;
+      margin: 0 auto 18px auto;
+      max-width: 280px;
       box-shadow: 2px 2px 0px #cbd5e1;
     }
 
     .condition-title {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #64748b;
       margin-bottom: 2px;
     }
 
     .condition-value {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: bold;
       color: #1e293b;
     }
 
     .result-section-title {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: bold;
       color: #1e293b;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .top3-grid {
@@ -392,7 +384,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .soft-card {
@@ -424,19 +416,19 @@
 
     .soft-card-content h4 {
       margin: 0 0 2px 0;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: #1e293b;
     }
 
     .soft-card-content p {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: #64748b;
       line-height: 1.35;
     }
 
     .suggestion-container {
-      margin: 0 auto 24px auto;
+      margin: 0 auto 20px auto;
       text-align: left;
       width: 100%;
     }
@@ -449,18 +441,18 @@
       padding: 10px 14px;
       text-align: center;
       box-shadow: 0 2px 6px rgba(244, 63, 94, 0.06);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .cloud-body {
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: bold;
       color: #881337;
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
     .cloud-highlight {
-      font-size: 1.05rem;
+      font-size: 1.0rem;
       color: #e11d48;
       font-weight: 700;
       display: inline-block;
@@ -471,32 +463,32 @@
       background: #fff5f5;
       border: 1.5px solid #f43f5e;
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 10px 14px;
       box-shadow: 1px 1px 0px #f43f5e;
     }
 
     .suggested-badge {
       background: #e11d48;
       color: #ffffff;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: bold;
-      padding: 2px 10px;
+      padding: 2px 8px;
       border-radius: 10px;
       display: inline-block;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .suggested-card h4 {
-      margin: 0 0 4px 0;
-      font-size: 0.92rem;
+      margin: 0 0 3px 0;
+      font-size: 0.88rem;
       color: #881337;
     }
 
     .suggested-card p {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: #4c0519;
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .back-btn {
@@ -504,31 +496,30 @@
       background: #64748b;
       color: #ffffff;
       text-decoration: none;
-      padding: 8px 22px;
+      padding: 8px 20px;
       border-radius: 20px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: bold;
     }
 
-    /* list.htmlと完全に統一したフッターCSS */
     footer {
       position: relative;
       z-index: 1;
       background-color: #f5ebe0;
       border-top: 2px dashed #d5bdaf;
-      padding: 30px 15px 20px 15px;
+      padding: 25px 15px 15px 15px;
       text-align: center;
       margin-top: auto;
       width: 100%;
     }
-    .footer-nav { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; font-size: 0.9rem; }
+    .footer-nav { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; font-size: 0.85rem; }
     .footer-nav a { color: #475569; text-decoration: none; }
-    .copyright { font-size: 0.75rem; color: #94a3b8; }
+    .copyright { font-size: 0.7rem; color: #94a3b8; }
 
     @media (max-width: 850px) {
       .page-wrapper {
         flex-direction: column;
-        padding-top: 80px;
+        padding-top: 65px;
       }
       .sidebar {
         width: 100%;
@@ -683,7 +674,6 @@
 
   </div>
 
-  <!-- list.htmlと完全統一したフッター -->
   <footer>
     <div class="footer-nav">
       <div><a href="top.html">ホーム</a></div>
@@ -695,11 +685,9 @@
     </div>
   </footer>
 
-  <!-- menu.js を読み込む -->
   <script src="menu.js"></script>
 
   <script>
-    // 試算用ロジック
     document.addEventListener('DOMContentLoaded', () => {
 
       const periodConfig = {
@@ -845,7 +833,7 @@
         const nextList = rankingByPeriod[pConfig.nextKey] || [];
         
         if (nextList.length > 0) {
-          const nextRank1Prod = nextList[0];
+          const nextRank1Prod = nextList.get ? nextList.get(0) : nextList[0];
           const nextInterest = calcInterest(amountVal, nextRank1Prod.rate, nextConfig.years);
           const diffInterest = nextInterest - rank1Interest;
 
