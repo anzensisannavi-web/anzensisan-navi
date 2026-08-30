@@ -317,6 +317,8 @@
       padding: 12px 14px;
       margin: 0 auto 20px auto;
       max-width: 300px;
+      width: 100%;
+      box-sizing: border-box;
       box-shadow: 2px 2px 0px #cbd5e1;
       text-align: left;
     }
@@ -327,12 +329,13 @@
       text-align: center;
       color: #1e293b;
     }
-    .sim-form-group { margin-bottom: 8px; }
+    .sim-form-group { margin-bottom: 8px; width: 100%; }
     .sim-label { font-size: 0.75rem; font-weight: bold; color: #475569; margin-bottom: 2px; display: block; }
-    .sim-input-wrapper { display: flex; align-items: center; gap: 6px; }
+    .sim-input-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; }
     .sim-input-wrapper input,
     .sim-input-wrapper select {
       flex: 1;
+      min-width: 0;
       padding: 6px 8px;
       border: 2px solid #cbd5e1;
       border-radius: 6px;
@@ -343,7 +346,7 @@
       outline: none;
     }
     .sim-input-wrapper select.is-placeholder { color: #94a3b8; }
-    .unit-text { font-size: 0.8rem; font-weight: bold; color: #64748b; white-space: nowrap; }
+    .unit-text { font-size: 0.8rem; font-weight: bold; color: #64748b; white-space: nowrap; flex-shrink: 0; }
     .sim-submit-btn {
       width: 100%;
       background: #3b82f6;
@@ -933,7 +936,7 @@
                 <span class="thumb-text">リスク比較</span>
               </div>
               <div class="special-info">
-                <h3 class="special-card-title">元本割れしない？安全資産の全種類まとめ</h3>
+                <h3 class="special-card-title">元本割れしない？安全資産の種類まとめ</h3>
                 <p class="special-card-desc">定期預金、個人向け国債、マネーファンド（MMF）など、リスクを避けながらお金を増やせる安全な置き場一覧。</p>
               </div>
             </a>
@@ -1033,7 +1036,7 @@
       });
     }
 
-    function getAdjustedAmount(inputValue) {
+    defFunction getAdjustedAmount(inputValue) {
       let val = parseFloat(inputValue);
       if (isNaN(val) || val < 1) return 1;
       return Math.round(val);
