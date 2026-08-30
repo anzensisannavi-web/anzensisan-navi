@@ -100,7 +100,7 @@
     /* --- 3. ヘッダー --- */
     header {
       background-color: #dbeafe;
-      padding: 12px 25px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -120,7 +120,7 @@
     .title-wrapper {
       position: relative;
       display: inline-block;
-      padding: 6px 20px;
+      padding: 4px 10px;
       text-decoration: none;
       cursor: pointer;
       background-color: transparent;
@@ -144,9 +144,9 @@
 
     .clip-img {
       position: absolute;
-      top: -12px;
-      left: 28px;
-      width: 24px;
+      top: -10px;
+      left: 20px;
+      width: 20px;
       z-index: 3;
     }
 
@@ -154,7 +154,7 @@
       position: relative;
       z-index: 2;
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #ffffff;
       text-shadow: 
@@ -167,16 +167,25 @@
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 6px 12px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
       color: #334155;
       cursor: pointer;
       box-shadow: 2px 2px 0px #64748b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      header { padding: 12px 25px; }
+      .title-wrapper { padding: 6px 20px; }
+      .clip-img { top: -12px; left: 28px; width: 24px; }
+      .site-title { font-size: 1.5rem; }
+      .menu-btn { padding: 8px 14px; font-size: 0.9rem; gap: 6px; }
     }
 
     .back-to-top {
