@@ -58,7 +58,7 @@
     /* --- 1. ヘッダー --- */
     header {
       background-color: #dbeafe;
-      padding: 12px 25px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -76,7 +76,7 @@
     .title-wrapper {
       position: relative;
       display: inline-block;
-      padding: 6px 20px;
+      padding: 4px 10px;
       text-decoration: none;
       cursor: pointer;
     }
@@ -98,9 +98,9 @@
 
     .clip-img {
       position: absolute;
-      top: -12px;
-      left: 28px;
-      width: 24px;
+      top: -10px;
+      left: 20px;
+      width: 20px;
       z-index: 3;
     }
 
@@ -108,7 +108,7 @@
       position: relative;
       z-index: 2;
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #ffffff;
       text-shadow: 
@@ -121,16 +121,25 @@
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 6px 12px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
       color: #334155;
       cursor: pointer;
       box-shadow: 2px 2px 0px #64748b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      header { padding: 12px 25px; }
+      .title-wrapper { padding: 6px 20px; }
+      .clip-img { top: -12px; left: 28px; width: 24px; }
+      .site-title { font-size: 1.5rem; }
+      .menu-btn { padding: 8px 14px; font-size: 0.9rem; gap: 6px; }
     }
 
     /* --- 2. レイアウト --- */
@@ -578,7 +587,7 @@
           <h2>1. 破たん時は大手銀行と全く同じ（ペイオフ対象）</h2>
           <p>実店舗のないネット銀行であっても、国の「預金保険制度（ペイオフ）」が適用されます。万が一銀行が破たんした場合でも、大手対面銀行と同様に「預金者1人あたり元本1,000万円までとその利息」が全額保護されます。また、分別管理が徹底されているため制度上の安全性に差はありません。</p>
 
-          <h2>2. ネット口座で注意したい「不正利用・乗っ取り」リスク</h2>
+          <h2>2. ネット口座で注意したい<a href="" target="_blank">「不正利用・乗っ取り」リスク</a></h2>
           <p>破たん保護とは別に、近年注目されているのが「パスワード流出や不正アクセスによる乗っ取り・不正出金」の問題です。</p>
           <p>金融機関によって被害発生時の補償方針や自己責任比率の捉え方には違いが見られます。<br>例えば、大手総合証券や伝統的な金融機関では手厚い全額補償方針を掲げているケースが多い一方、ネット専業の証券・金融サービスではユーザー側の管理状況（パスワード使い回し等）によって補償割合が一定限度に留まる可能性が規約上示唆されている場合もあります。</p>
 
