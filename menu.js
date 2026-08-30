@@ -30,7 +30,7 @@ const sponsorAds = [
   {
     type: "custom",
     name: "あんぜん運用特集コンテンツ",
-    description: "元本保証の資産運用や国債の購入方法について無料で学べるガイド",
+    description: "元本保証の資産運用や国債の購入方法<br>について無料で学べるガイド",
     url: "#",
     badge: "PR",
     bgColor: "#eff6ff",
