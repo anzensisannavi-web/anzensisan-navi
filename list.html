@@ -97,10 +97,10 @@
       to { opacity: 1; }
     }
 
-    /* --- 3. ヘッダー --- */
+    /* --- 3. ヘッダー（スマホで絶対に崩れないコンパクト設計） --- */
     header {
       background-color: #dbeafe;
-      padding: 10px 15px;
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -120,11 +120,12 @@
     .title-wrapper {
       position: relative;
       display: inline-block;
-      padding: 4px 10px;
+      padding: 4px 8px;
       text-decoration: none;
       cursor: pointer;
       background-color: transparent;
       border-radius: 8px;
+      max-width: 65%;
     }
 
     .tape-bg {
@@ -144,9 +145,9 @@
 
     .clip-img {
       position: absolute;
-      top: -10px;
-      left: 20px;
-      width: 20px;
+      top: -8px;
+      left: 15px;
+      width: 18px;
       z-index: 3;
     }
 
@@ -154,22 +155,23 @@
       position: relative;
       z-index: 2;
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #ffffff;
       text-shadow: 
         2px 2px 3px rgba(30, 41, 59, 0.6),
         -1px -1px 0px rgba(148, 163, 184, 0.4);
       letter-spacing: 0.05em;
+      white-space: nowrap;
     }
 
     .menu-btn {
       background: #ffffff;
       border: 2px solid #64748b;
       border-radius: 8px;
-      padding: 6px 12px;
+      padding: 6px 10px;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #334155;
       cursor: pointer;
@@ -182,7 +184,7 @@
 
     @media (min-width: 768px) {
       header { padding: 12px 25px; }
-      .title-wrapper { padding: 6px 20px; }
+      .title-wrapper { padding: 6px 20px; max-width: none; }
       .clip-img { top: -12px; left: 28px; width: 24px; }
       .site-title { font-size: 1.5rem; }
       .menu-btn { padding: 8px 14px; font-size: 0.9rem; gap: 6px; }
@@ -541,17 +543,31 @@
       .col-product { width: 130px; }
     }
 
+    /* --- 7. フッター（スマホでもきれいに収まるコンパクト設計） --- */
     footer {
       position: relative;
       z-index: 1;
       background-color: #f5ebe0;
       border-top: 2px dashed #d5bdaf;
-      padding: 30px 15px 20px 15px;
+      padding: 25px 10px 15px 10px;
       text-align: center;
     }
-    .footer-nav { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; font-size: 0.9rem; }
-    .footer-nav a { color: #475569; text-decoration: none; }
-    .copyright { font-size: 0.75rem; color: #94a3b8; }
+    .footer-nav { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-bottom: 20px; 
+      font-size: 0.82rem; 
+    }
+    .footer-nav a { 
+      color: #475569; 
+      text-decoration: none; 
+      word-break: break-all;
+    }
+    .copyright { 
+      font-size: 0.72rem; 
+      color: #94a3b8; 
+    }
   </style>
 </head>
 <body>
