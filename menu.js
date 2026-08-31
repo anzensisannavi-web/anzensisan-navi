@@ -6,6 +6,7 @@ const menuData = [
   { title: "特集コンテンツ", url: "contents.html" }
 ];
 
+
 // スポンサー・広告のリストデータ
 const sponsorAds = [
   {
@@ -24,7 +25,7 @@ const sponsorAds = [
         </div>
       </div>
     `,
-    bgColor: "#ffffff",
+    bgColor: "#c9f9ff",
     borderColor: "#e2e8f0"
   },
   {
@@ -44,7 +45,47 @@ const sponsorAds = [
     badge: "PR",
     bgColor: "#ecfdf5",
     borderColor: "#a7b82a"
+  },
+  {
+    type: "html",
+    // DOUCEコーヒー・LEOコーヒーのバナー画像 ＋ テキストを1セットにして中央寄せ・通常フォントで出力
+    content: `
+      <div style="text-align: center; font-family: sans-serif, Arial, sans-serif;">
+        <a href="https://px.a8.net/svt/ejp?a8mat=4BAITQ+CQFSKY+5XNE+5ZEMP" rel="nofollow" target="_blank" style="display: inline-block; margin-bottom: 8px;">
+          <img border="0" width="100" height="60" alt="" src="https://www26.a8.net/svt/bgt?aid=260831438770&wid=001&eno=01&mid=s00000027689001005000&mc=1" style="display: block; margin: 0 auto;">
+        </a>
+        <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4BAITQ+CQFSKY+5XNE+5ZEMP" alt="" style="display:none;">
+        <div>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4BAITQ+CQFSKY+5XNE+5YRHE" rel="nofollow" target="_blank" style="font-size: 0.78rem; color: #333333; text-decoration: underline; line-height: 1.4; display: inline-block;">
+            【LEO SPECIALTY COFFEE】
+          </a>
+        </div>
+      </div>
+    `,
+    bgColor: "#e0b878",
+    borderColor: "#f9d463"
+  },
+  {
+    type: "html",
+    // CAMPFIREのバナー画像 ＋ テキストを1セットにして中央寄せ・通常フォントで出力
+    content: `
+      <div style="text-align: center; font-family: sans-serif, Arial, sans-serif;">
+        <a href="https://px.a8.net/svt/ejp?a8mat=4BAITQ+CDXOVM+5XBQ+5Z6WX" rel="nofollow" target="_blank" style="display: inline-block; margin-bottom: 8px;">
+          <img border="0" width="120" height="60" alt="" src="https://www26.a8.net/svt/bgt?aid=260831438749&wid=001&eno=01&mid=s00000027647001004000&mc=1" style="display: block; margin: 0 auto;">
+        </a>
+        <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4BAITQ+CDXOVM+5XBQ+5Z6WX" alt="" style="display:none;">
+        <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4BAITQ+CDXOVM+5XBQ+5YJRM" alt="" style="display:none;">
+        <div>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4BAITQ+CDXOVM+5XBQ+5YJRM" rel="nofollow" target="_blank" style="font-size: 0.78rem; color: #333333; text-decoration: underline; line-height: 1.4; display: inline-block;">
+            国内最大級！夢を形に、クラウドで<br>資金調達【CAMPFIRE】
+          </a>
+        </div>
+      </div>
+    `,
+    bgColor: "#fff5f5",
+    borderColor: "#f90808"
   }
+
 ];
 
 function setupGlobalMenu() {
