@@ -627,7 +627,7 @@
       <div class="suggestion-container" id="suggestion-box">
         <div class="cloud-message-box">
           <div class="cloud-body">
-            預入期間を1位のプランで<span id="sug-period-label">「3ヶ月」</span>にすると<br>
+            同じ銀行のまま預入期間を<span id="sug-period-label">「3ヶ月」</span>にすると<br>
             利息がさらに <span class="cloud-highlight" id="sug-diff-label">＋0円</span> 増えます！✨
           </div>
         </div>
@@ -833,9 +833,20 @@
         const nextList = rankingByPeriod[pConfig.nextKey] || [];
         
         if (nextList.length > 0) {
-          const nextRank1Prod = nextList.get ? nextList.get(0) : nextList[0];
-          const nextInterest = calcInterest(amountVal, nextRank1Prod.rate, nextConfig.years);
-          const diffInterest = nextInterest - rank1Interest;
+          // 現在の1位の銀行名（例：「あおぞら銀行」や「SBJ銀行」など）を抽出する
+          const bankNameParts = rank1Prod.name.split('：');
+          const currentBank = bankNameParts.length > 1 ? bankNameParts[1].trim() : rank1Prod.name;
+
+          // 次の期間のリストから「同じ銀行名」を含むプランを探す
+          let targetProd = nextList.find(p => p.name.includes(currentBank));
+
+          // もし同じ銀行が次の期間にない場合は、次の期間の1位をフォールバックとして使う
+          if (!targetProd) {
+            targetProd = nextList[0];
+          }
+
+          const targetInterest = calcInterest(amountVal, targetProd.rate, nextConfig.years);
+          const diffInterest = targetInterest - rank1Interest;
 
           if (diffInterest <= 0) {
             sugBox.style.display = 'none';
@@ -843,7 +854,7 @@
             sugBox.style.display = 'block';
             document.getElementById('sug-period-label').textContent = `「${nextConfig.label}」`;
             document.getElementById('sug-diff-label').textContent = `＋${diffInterest.toLocaleString()}円`;
-            document.getElementById('sug-card-title').textContent = nextRank1Prod.name;
+            document.getElementById('sug-card-title').textContent = targetProd.name;
             document.getElementById('sug-card-desc').textContent = `預入期間を${nextConfig.label}に伸ばすことで受取利息が +${diffInterest.toLocaleString()}円 増えます。`;
           }
         } else {
