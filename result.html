@@ -833,29 +833,30 @@
         const nextList = rankingByPeriod[pConfig.nextKey] || [];
         
         if (nextList.length > 0) {
-          // 現在の1位の銀行名（例：「あおぞら銀行」や「SBJ銀行」など）を抽出する
+          // 現在の1位の銀行名（例：「あおぞら銀行」や「イオン銀行」など）を抽出する
           const bankNameParts = rank1Prod.name.split('：');
           const currentBank = bankNameParts.length > 1 ? bankNameParts[1].trim() : rank1Prod.name;
 
           // 次の期間のリストから「同じ銀行名」を含むプランを探す
-          let targetProd = nextList.find(p => p.name.includes(currentBank));
+          const targetProd = nextList.find(p => p.name.includes(currentBank));
 
-          // もし同じ銀行が次の期間にない場合は、次の期間の1位をフォールバックとして使う
-          if (!targetProd) {
-            targetProd = nextList[0];
-          }
+          // 同じ銀行のプランが次の期間に存在する場合のみ提案ボックスを表示する
+          if (targetProd) {
+            const targetInterest = calcInterest(amountVal, targetProd.rate, nextConfig.years);
+            const diffInterest = targetInterest - rank1Interest;
 
-          const targetInterest = calcInterest(amountVal, targetProd.rate, nextConfig.years);
-          const diffInterest = targetInterest - rank1Interest;
-
-          if (diffInterest <= 0) {
-            sugBox.style.display = 'none';
+            if (diffInterest <= 0) {
+              sugBox.style.display = 'none';
+            } else {
+              sugBox.style.display = 'block';
+              document.getElementById('sug-period-label').textContent = `「${nextConfig.label}」`;
+              document.getElementById('sug-diff-label').textContent = `＋${diffInterest.toLocaleString()}円`;
+              document.getElementById('sug-card-title').textContent = targetProd.name;
+              document.getElementById('sug-card-desc').textContent = `同じ銀行のまま預入期間を${nextConfig.label}に伸ばすことで受取利息が +${diffInterest.toLocaleString()}円 増えます。`;
+            }
           } else {
-            sugBox.style.display = 'block';
-            document.getElementById('sug-period-label').textContent = `「${nextConfig.label}」`;
-            document.getElementById('sug-diff-label').textContent = `＋${diffInterest.toLocaleString()}円`;
-            document.getElementById('sug-card-title').textContent = targetProd.name;
-            document.getElementById('sug-card-desc').textContent = `預入期間を${nextConfig.label}に伸ばすことで受取利息が +${diffInterest.toLocaleString()}円 増えます。`;
+            // 次の期間に同じ銀行のプランが一切ない場合は、おかしな比較を防ぐため非表示にする
+            sugBox.style.display = 'none';
           }
         } else {
           sugBox.style.display = 'none';
